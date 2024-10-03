@@ -1,0 +1,19 @@
+﻿@model OrderStatus
+@{
+    ViewData["Title"] = "Рабочий стол";
+}
+
+<main class="container">
+    <input type="hidden" name="orderId" value=@ViewBag.OrderId/>
+    <form method="post" asp-controller="Home" asp-action="ChangeStatus">
+        <select name="status">
+            <option disabled>Выберите статус:</option>
+            <option value="@OrderStatus.IsReceived">Получена</option>
+            <option value="@OrderStatus.InWork">В работе</option>
+            <option value="@OrderStatus.IsDone">Выполнена</option>
+            <option value="@OrderStatus.IsRejected">Отклонена</option>
+            <option value="@OrderStatus.IsCanceled">Отменена</option>
+        </select>
+        <input type="submit" value="Сохранить"/>
+    </form>
+</main>

@@ -1,0 +1,7 @@
+﻿@model KeyValuePair<string, string>
+
+<form method="post" asp-controller="Contacts" asp-action="Delete" asp-route-logo=@Model.Key>
+    <input type="image" src="@Model.Key" alt="logo" readonly>
+    <input type="url" name="linkPath" value="@Model.Value" readonly />
+    <input type="submit" value="Удалить" />
+</form>

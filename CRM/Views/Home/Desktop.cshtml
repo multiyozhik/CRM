@@ -1,0 +1,70 @@
+﻿@model List<Order>
+@{
+    ViewData["Title"] = "Рабочий стол";
+}
+
+<div class="container colored-container">
+    <main>
+        <nav>
+            <p>
+                Всего @Model.Count заявки.
+            </p>
+            <table class="desktop-table">
+                <thead><tr></tr></thead>
+                <tbody>
+                    <tr>
+                        <td><a asp-controller="Home" asp-action="FilterByPeriod" asp-route-period="today">Сегодня</a></td>
+                        <td><a asp-controller="Home" asp-action="FilterByPeriod" asp-route-period="yesterday">Вчера</a></td>
+                        <td><a asp-controller="Home" asp-action="FilterByPeriod" asp-route-period="week">Неделя</a></td>
+                        <td><a asp-controller="Home" asp-action="FilterByPeriod" asp-route-period="month">Месяц</a></td>
+                        <td>
+                            <form asp-controller="Home" asp-action="FilterByDateRange">
+                                <label>Период с </label><input type="date" name="dateStart" required />
+                                <label>по </label><input type="date" name="dateEnd" required />
+                                <input type="submit" value="Показать"/>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </nav>
+
+        @if(ViewBag.OrdersByPeriodCount is null)
+        {
+            <p>Период выборки заявок не выбран.</p>
+        }
+        else
+        {
+            <p>За указанный период поступило @(ViewBag.OrdersByPeriodCount) заявок.</p>
+        }      
+
+        <table class="desktop-table">
+            <thead>
+                <tr>
+                    <th>Номер заявки</th>
+                    <th>Время заявки</th>
+                    <th>Имя</th>
+                    <th>Текст заявки</th>
+                    <th>Контакты</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.Id</td>
+                        <td>@order.TimeStamp</td>
+                        <td>@order.Name</td>
+                        <td>@order.Text</td>
+                        <td>@order.Email</td>
+                        <td>@order.Status</td>
+                        <td><a href="/Home/ChangeStatus/@order.Id">Изменить статус</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </main>
+</div>
+
+

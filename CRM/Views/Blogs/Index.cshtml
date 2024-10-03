@@ -1,0 +1,39 @@
+﻿@using CRMSystem.ViewModels;
+@using System.Text.Json;
+@{
+    using var fs = new FileStream("./wwwroot/files/default.json", FileMode.Open);
+    var FieldValuesVM = JsonSerializer.Deserialize<FieldValuesViewModel>(fs);
+    ViewData["Title"] = FieldValuesVM?.BlogMenuItemName ?? "Блог";
+    var isInRole = User.IsInRole("admin");
+}
+@model IEnumerable<Blog>
+
+<main class="container">
+    <div class="container-title">
+        <h2>@ViewData["Title"]</h2>
+    </div>    
+    <div class="separator-line"></div>
+    <section class="cards-block">
+        @foreach(var blog in Model)
+        {
+            <article class="blog-card">
+                <p>
+                    <time class="article" datetime=@blog.CreateAt.ToString()>@blog.CreateAt.ToString("D")</time>
+                </p>
+                <a href="/Blogs/ArticleDescription">
+                    <img src="~/img/@blog.Photo" alt="blog photo" class="blog">
+                </a>
+                <div class="article">
+                    <h5 class="blog-text blog-card-title">@blog.Name</h5>
+                    <p class="blog-text">@blog.Description</p>
+                </div>
+            </article>
+        }
+        @if (isInRole)
+        {
+            <div class="edit-wrapper">
+                <a class="btn" href="/Blogs/Add">Добавить пост</a>
+            </div>
+        }
+    </section>
+</main>

@@ -1,0 +1,53 @@
+﻿@using CRMSystem.ViewModels;
+@using System.Text.Json;
+@{
+    using var fs = new FileStream("./wwwroot/files/default.json", FileMode.Open);
+    var FieldValuesVM = JsonSerializer.Deserialize<FieldValuesViewModel>(fs);
+    ViewData["Title"] = FieldValuesVM?.ContactsMenuItemName ?? "Контакты";
+
+    using var linksStream = new FileStream("./wwwroot/files/social-media-links.json", FileMode.Open);
+    var linksDict = JsonSerializer.Deserialize<Dictionary<string, string>>(linksStream);
+
+    var isInRole = User.IsInRole("admin");
+}
+
+<main class="container">
+    <div class="container-title">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+    <div class="separator-line"></div>
+    <section class="contacts-container">
+        <div class="contacts-block">
+            <div>
+                <address>168985, г. Москва, ул. Тимирязева, 12</address>
+                <p>
+                    Телефон: <a href="tel:+79893452200">+7 989 345 22 00</a>
+                </p>
+                <p>
+                    Факс: <a href="fax:+79893452200">+7 989 345 22 00</a>
+                </p>
+                <p>
+                    e-mail: <a href="mailto: sviridovairis@gmail.com">sviridovairis@gmail.com</a>
+                </p>
+                <p>ФИО директора</p>
+            </div>
+            <nav class="nav nav-left-bottom">
+                @foreach (var link in linksDict)
+                {
+                    <a href=@link.Value target="_blank">
+                        <img src=@link.Key alt="logo">
+                    </a>
+                }
+            </nav>
+        </div>
+        <div>
+            <img class="map" src="/img/map.png" alt="map"/>
+        </div>
+    </section>
+    @if (isInRole)
+    {
+        <div class="edit-wrapper">
+            <a class="btn" href="/Contacts/Edit">Редактировать ссылки</a>
+        </div>
+    }
+</main>

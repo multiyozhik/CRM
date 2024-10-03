@@ -1,0 +1,34 @@
+﻿@using CRMSystem.ViewModels;
+@using System.Text.Json;
+@{
+    using var fs = new FileStream("./wwwroot/files/default.json", FileMode.Open);
+    var FieldValuesVM = JsonSerializer.Deserialize<FieldValuesViewModel>(fs);
+    ViewData["Title"] = FieldValuesVM?.BlogMenuItemName ?? "Блог";
+}
+
+<main class="container">
+    <div class="container-title">
+        <h2>
+            1С: Производственная безопасность
+        </h2>
+    </div>
+    <div class="separator-line"></div>
+    <section class="description-block">
+        <div>
+            <p><time datetime="2022-06-29">29 июня 2022 г.</time></p>
+        </div>
+        <div class="article-desription-block">
+            <div>
+                <img class="blog" src="/img/blog-1.png" alt="blog-1 photo"/>
+            </div>
+            <article class="article-block">
+                <p class="article">
+                    Решения обеспечивают автоматизацию 
+                </p>
+                <form class="btn-back-wrapper" action="/Blog/Index" method="get">
+                    <input class="btn btn-right" type="submit" value="Назад">
+                </form>
+            </article>            
+        </div>
+    </section>
+</main>

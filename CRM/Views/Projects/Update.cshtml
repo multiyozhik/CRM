@@ -1,0 +1,24 @@
+﻿@using CRMSystem.ViewModels;
+@using System.Text.Json;
+@{
+    using var fs = new FileStream("./wwwroot/files/default.json", FileMode.Open);
+    var FieldValuesVM = JsonSerializer.Deserialize<FieldValuesViewModel>(fs);
+    ViewData["Title"] = FieldValuesVM?.ProjectMenuItemName ?? "Проекты";
+    var isInRole = User.IsInRole("admin");
+}
+@model Project
+
+<main class="container">
+    <div asp-validation-summary="All">
+        <form method="post" asp-controller="Projects" asp-action="Update">
+            <input hidden name="id" value="@Model.Id"/>
+            <label>Название проекта:</label>
+            <input type="text" name="name" value="@Model.Name" requied />
+            <label>Описание проекта:</label>
+            <input type="text" name="description" value="@Model.Description" requied />
+            <label>Добавить фото:</label>
+            <input type="file" name="photo" accept="image/png, image/jpeg, image/svg" value="Добавить фото" />
+            <input type="submit" value="Сохранить" />
+        </form>
+    </div>
+</main>

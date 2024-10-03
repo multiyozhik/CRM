@@ -1,0 +1,22 @@
+﻿@using CRMSystem.ViewModels;
+@using System.Text.Json;
+@{
+    using var fs = new FileStream("./wwwroot/files/default.json", FileMode.Open);
+    var FieldValuesVM = JsonSerializer.Deserialize<FieldValuesViewModel>(fs);
+    ViewData["Title"] = FieldValuesVM?.ProjectMenuItemName ?? "Сервисы";
+    var isInRole = User.IsInRole("admin");
+}
+@model Service
+
+<main class="container">
+    <div asp-validation-summary="All">
+        <form method="post" asp-controller="Services" asp-action="Update">
+            <input hidden name="id" value="@Model.Id" />
+            <label>Название услуги:</label>
+            <input type="text" name="name" value="@Model.Name" requied />
+            <label>Описание услуги:</label>
+            <input type="text" name="description" value="@Model.Description" requied />
+            <input type="submit" value="Сохранить" />
+        </form>
+    </div>
+</main>

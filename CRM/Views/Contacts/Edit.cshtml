@@ -1,0 +1,27 @@
+﻿@using CRMSystem.ViewModels;
+@using System.Text.Json;
+@{
+    using var fs = new FileStream("./wwwroot/files/default.json", FileMode.Open);
+    var FieldValuesVM = JsonSerializer.Deserialize<FieldValuesViewModel>(fs);
+    ViewData["Title"] = FieldValuesVM?.ContactsMenuItemName ?? "Контакты";
+
+    using var linksStream = new FileStream("./wwwroot/files/social-media-links.json", FileMode.Open);
+    var linksDict = JsonSerializer.Deserialize<Dictionary<string, string>>(linksStream);
+
+    var isInRole = User.IsInRole("admin"); 
+}
+
+<main class="container">
+    @foreach (var link in linksDict)
+    {
+        @await Html.PartialAsync("_PartialLinkBlock", link);
+    }
+
+    <div id="newLinkBlock" style="visibility: hidden"> 
+        @await Html.PartialAsync("_PartialNewLinkBlock")       
+    </div>
+
+    <button id="btn" onclick="document.getElementById('newLinkBlock').style.visibility = 'visible'">
+        +Добавить еще
+    </button>
+</main>

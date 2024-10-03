@@ -1,0 +1,79 @@
+﻿@using CRMSystem.ViewModels;
+@using System.Text.Json;
+
+@{
+    using var fs = new FileStream("./wwwroot/files/default.json", FileMode.Open);
+    var FieldValuesVM = JsonSerializer.Deserialize<FieldValuesViewModel>(fs);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CRMSystem</title>
+    <link rel="stylesheet" href="~/css/normalize.css"/>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css"/>
+</head>
+<body>
+    <header>
+        <div class="header">
+        <nav>
+            <ul class="nav">
+                <li><a href="/Admin/Index">Список пользователей</a></li>
+                <li><a href="/Account/LogIn">Войти</a></li>
+                <li><a href="/Account/LogOut">Выйти</a></li>
+            </ul>
+        </nav>
+        @if(!User.IsInRole("admin"))
+        {
+            <nav>
+                <ul class="nav">
+                    <li><a href="/Home/Index">Главная</a></li>
+                        <li><a href="/Services/Index">@FieldValuesVM?.ServiceMenuItemName</a></li>
+                        <li><a href="/Projects/Index">@FieldValuesVM?.ProjectMenuItemName</a></li>
+                        <li><a href="/Blogs/Index">@FieldValuesVM?.BlogMenuItemName</a></li>
+                    <li><a href="#"></a></li>
+                        <li><a href="/Contacts/Index">@FieldValuesVM?.ContactsMenuItemName</a></li>
+                </ul>
+            </nav>
+            <h1 class="slogan">Расширяем возможности</h1>
+        }            
+        </div>        
+    </header>
+
+    <div class="main-wrapper">
+        @if (User.IsInRole("admin"))
+        {
+            <aside>
+                <nav>
+                    <ul class="aside">
+                        <li><a href="/Home/Desktop">Рабочий стол</a></li>
+                        <li><a href="/Home/Index">Главная</a></li>
+                        <li><a href="/Projects/Index">@FieldValuesVM?.ProjectMenuItemName</a></li>
+                        <li><a href="/Services/Index">@FieldValuesVM?.ServiceMenuItemName</a></li>
+                        <li><a href="/Blogs/Index/">@FieldValuesVM?.BlogMenuItemName</a></li>
+                        <li><a href="/Contacts/Index">@FieldValuesVM?.ContactsMenuItemName</a></li>
+                    </ul>
+                </nav>
+            </aside>            
+        }
+        @RenderBody()
+    </div>
+
+    <footer>
+        <div class="footer"></div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

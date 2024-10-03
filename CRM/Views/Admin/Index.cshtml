@@ -1,0 +1,43 @@
+﻿@using CRMSystem.Authentication
+@model IEnumerable<AppUser>
+@{
+    ViewData["Title"] = "Список пользователей";
+}
+
+<main class="container">
+    <div>
+        <h2>Список пользователей</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>UserName</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(AppUser user in Model)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                        <td>
+                            <a method="get" asp-controller="Admin" asp-action="EditAppUser" asp-route-id="@user.Id">
+                                <input type="submit" value="Изменить" />
+                            </a>
+                        </td>
+                        <td>
+                            <form method="post" asp-controller="Admin" asp-action="DeleteAppUser" asp-route-id="@user.Id">                           
+                                <input type="submit" value="Удалить">
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>    
+        <a asp-controller="Admin" asp-action="CreateAppUser" method="get">
+            <input type="button" value="Создать" />
+        </a> 
+    </div>
+</main>

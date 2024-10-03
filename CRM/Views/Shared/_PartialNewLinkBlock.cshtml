@@ -1,0 +1,14 @@
+﻿@model KeyValuePair<string, string>
+
+<div asp-validation-summary="All">
+    <form method="post" asp-controller="Contacts" asp-action="SaveNewLink">
+        <label for="icon-add-btn"><img src="/img/icon-add-btn.png" alt="input logo" width="50" height="50" /></label>
+        <input id="icon-add-btn" hidden type="file" name="logo" accept=".png, .jpg, .jpeg, .svg" placeholder="" value="" required />
+        <input type="url" name="linkPath" value="" requied />
+        <input type="submit" value="Сохранить" />
+        <button id="btn" onclick="document.getElementById('newLinkBlock').style.visibility = 'hidden'">
+            Удалить
+        </button>
+    </form>
+</div>
+

@@ -1,0 +1,43 @@
+﻿@using CRMSystem.ViewModels;
+@using System.Text.Json;
+@{
+    using var fs = new FileStream("./wwwroot/files/default.json", FileMode.Open);
+    var FieldValuesVM = JsonSerializer.Deserialize<FieldValuesViewModel>(fs);
+    ViewData["Title"] = FieldValuesVM?.ServiceMenuItemName ?? "Сервисы";
+    var isInRole = User.IsInRole("admin");
+}
+@model IEnumerable<Service>
+
+<main class="container">
+    <div class="container-title">
+        <h2 class="container-title">@ViewData["Title"]</h2>
+    </div>    
+    <div class="separator-line"></div>
+    <section class="description-block">
+        @foreach(var service in Model)
+        {
+            <details class="detailes">
+                <summary>@service.Name</summary>
+                <p class="article">@service.Description</p>
+            </details>
+            @if (isInRole)
+            {
+                <div>
+                    <form class="icons-block" method="post" asp-controller="Services" asp-action="Delete" asp-route-id="@service.Id">
+                        <a class="icon-btn" href="/Services/Update/@service.Id">
+                            <img src="~/img/icon-edit-btn.png" alt="edit button" />
+                        </a>
+                        <input class="icon-btn delete-icon-btn" type="image" alt="delete button"
+                               src="~/img/icon-delete-btn.png" />
+                    </form>
+                </div>
+            }
+        }
+        @if (isInRole)
+        {
+            <div class="edit-wrapper">
+                <a class="btn" href="/Services/Add">Добавить услугу</a>
+            </div>
+        }
+    </section>
+</main>

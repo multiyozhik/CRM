@@ -1,0 +1,34 @@
+﻿@using CRMSystem.ViewModels;
+@using System.Text.Json;
+@{
+    using var fs = new FileStream("./wwwroot/files/default.json", FileMode.Open);
+    var FieldValuesVM = JsonSerializer.Deserialize<FieldValuesViewModel>(fs);
+    ViewData["Title"] = "Главная";
+}
+
+<main class="container">
+    <p class="text-before-form">@FieldValuesVM?.PrecedingFormText</p>
+    <form action="/Home/AddOrder" method="post" class="order-form">
+        <div class="wrapper input1-wrapper">
+            <label class="label" for="name">Имя: </label> 
+            <input class="input" type="text" name="name" id="name" maxlength="50" required />
+        </div>
+        <div class="wrapper input2-wrapper">
+            <label class="label" for="email">Email: </label>
+            <input class="input" type="email" name="email" id="email" required />
+        </div>
+        <div class="wrapper comment-wrapper">
+            <label class="label" for="message">Текст сообщения: </label>
+            <input class="input" type="text" name="message" id="message" maxlength="150" required />
+        </div>
+        <div class="wrapper btn-wrapper">  
+            <input class="btn" type="submit" value="Отправить" required />
+        </div>
+    </form>
+    @if(User.IsInRole("admin"))
+    {
+        <div class="edit-wrapper">
+            <a class="btn" href="/Home/Edit">Редактировать</a>
+        </div>
+    }
+</main>

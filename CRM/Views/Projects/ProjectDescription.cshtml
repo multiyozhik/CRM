@@ -1,0 +1,25 @@
+﻿@using CRMSystem.ViewModels;
+@using System.Text.Json;
+@{
+    using var fs = new FileStream("./wwwroot/files/default.json", FileMode.Open);
+    var FieldValuesVM = JsonSerializer.Deserialize<FieldValuesViewModel>(fs);
+    ViewData["Title"] = FieldValuesVM?.ProjectMenuItemName ?? "Проекты";
+}
+@model Project
+
+<main class="container">
+    <div class="container-title">
+        <div>
+            <h2>@Model.Name</h2>
+        </div>
+        <div>
+            <img class="container-title logo" src="../img/@Model.Photo" alt="project card" />
+        </div>
+    </div>    
+    <div class="separator-line"></div>
+    <section class="description-block">
+        <article class="article">
+            @Model.Description
+        </article>
+    </section>
+</main>

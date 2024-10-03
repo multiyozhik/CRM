@@ -1,0 +1,22 @@
+﻿@using CRMSystem.ViewModels
+@model FieldValuesViewModel
+@{
+    ViewData["Title"] = "Главная";
+}
+
+<main class="container">
+    <form method="post" asp-controller="Home" asp-action="Edit">
+        <label for="projectMenuItemName">Название элемента меню 1: </label>
+        <input class="input" type="text" name="projectMenuItemName" value="Проекты" />
+        <label for="serviceMenuItemName">Название элемента меню 2: </label>
+        <input class="input" type="text" name="serviceMenuItemName" value="Услуги" />
+        <label for="blogMenuItemName">Название элемента меню 3: </label>
+        <input class="input" type="text" name="blogMenuItemName" value="Блог" />
+        <label for="contactsMenuItemName">Название элемента меню 4: </label>
+        <input class="input" type="text" name="contactsMenuItemName" value="Контакты" />
+        <label for="precedingFormText">Текст перед формой отправки заявки: </label>
+        <input class="input" type="text" name="precedingFormText" value="Оставить заявку или задать вопрос" />
+        <input class="btn" type="submit" value="Сохранить" />
+    </form>
+</main>
+

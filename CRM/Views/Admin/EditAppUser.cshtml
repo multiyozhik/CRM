@@ -1,0 +1,24 @@
+﻿@using CRMSystem.ViewModels
+@model AppUserViewModel
+@{
+    ViewData["Title"] = "Список пользователей";
+}
+
+<main class="container">
+    <div asp-validation-summary="All">
+        <h2>Введите логин и пароль:</h2>
+        <form method="post" asp-controller="Admin" asp-action="EditAppUser" method="post">
+            <input id="Id" type="hidden" name="Id" value="@Model.Id"/>
+            <label asp-for="UserName">Имя: </label>
+            <input id="UserName" type="text" name="UserName" value="@Model.UserName"/>
+            <span asp-validation-for="UserName"/>
+            <label asp-for="Email">Email: </label>
+            <input id="Email" type="email" name="Email" value="@Model.Email"/>
+            <span asp-validation-for="Email"/>
+            <label asp-for="Password">Пароль: </label>
+            <input id="Password" type="password" name="Password"/>
+            <span asp-validation-for="Password"/>
+            <button type="submit">Изменить</button>
+        </form>
+    </div>
+</main>
