@@ -9,9 +9,6 @@ using System.Collections.Generic;
 
 namespace CRMClientApp.Views
 {
-    /// <summary>
-    /// Логика взаимодействия для OrderWindow.xaml
-    /// </summary>
     public partial class CRMWindow : Window
     {
         private readonly Uri baseAddress = new("https://localhost:7033");
