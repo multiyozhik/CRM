@@ -1,13 +1,9 @@
 ﻿using CRMClientApp.Commands;
 using CRMClientApp.Models;
 using CRMClientApp.Services;
-using CRMClientApp.Views;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Windows.Threading;
 
 namespace CRMClientApp.ViewModels
 {
@@ -24,8 +20,7 @@ namespace CRMClientApp.ViewModels
 
         public OrderVM AddingOrder { get; } = new OrderVM();
 
-        private AsyncRelayCommand? addOrderCommand;     
-
+        private AsyncRelayCommand? addOrderCommand; 
         public AsyncRelayCommand? AddOrderCommand
         {
             get => addOrderCommand ??= new AsyncRelayCommand(
@@ -40,14 +35,6 @@ namespace CRMClientApp.ViewModels
             {
                 selectedProject = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedProject)));
-                if (selectedProject is not null)
-                {
-                    var projectWindow = new ProjectWindow()
-                    {
-                        DataContext = SelectedProject
-                    };
-                    Dispatcher.CurrentDispatcher.Invoke(projectWindow.ShowDialog);
-                }
             }
         }
 
@@ -59,6 +46,49 @@ namespace CRMClientApp.ViewModels
             {
                 projectsList = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(projectsList)));
+            }
+        }
+
+        private Service? selectedService;
+        public Service? SelectedService
+        {
+            get => selectedService;
+            set
+            {
+                selectedService = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedService)));
+            }
+        }
+
+        private ObservableCollection<Service>? servicesList;
+        public ObservableCollection<Service>? ServicesList
+        {
+            get => servicesList;
+            set
+            {
+                servicesList = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ServicesList)));
+            }
+        }
+
+        private Blog? selectedBlog;
+        public Blog? SelectedBlog
+        {
+            get => selectedBlog;
+            set
+            {
+                selectedBlog = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedBlog)));
+            }
+        }
+        private ObservableCollection<Blog>? blogsList;
+        public ObservableCollection<Blog>? BlogsList
+        {
+            get => blogsList;
+            set
+            {
+                blogsList = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BlogsList)));
             }
         }
     }

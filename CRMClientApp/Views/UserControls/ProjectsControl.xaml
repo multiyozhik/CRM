@@ -7,29 +7,34 @@
              xmlns:local="clr-namespace:CRMClientApp.ViewModels" 
              d:DataContext="{d:DesignInstance Type=local:CRMViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <WrapPanel>
-            <ListView 
+    <Grid Margin="50">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Foreground="Blue" Text="Проекты"/>
+        <ListView Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                 ItemsSource="{Binding ProjectsList, 
-                    Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                SelectedItem="{Binding SelectedProject, Mode = OneWayToSource, 
-                    NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}">                
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderThickness="3" BorderBrush="DarkGray">
-                            <StackPanel>
-                                <Button x:Name="OpenProjectButton" 
-                                        Click="OpenProjectButton_Click" 
-                                        CommandParameter="{Binding SelectedItem}">
-                                    <Image Source="{Binding Path=Photo}" 
-                                           Height="Auto" Width="Auto"/>
-                                </Button>
-                                <TextBlock Text="{Binding Path=Name}"/>
-                            </StackPanel>
-                        </Border>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </WrapPanel>        
+                    Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" 
+                SelectedItem="{Binding SelectedProject, Mode=OneWayToSource, 
+                    NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Button x:Name="OpenProjectButton" Style="{x:Null}" Width="250" Height="250"
+                                        Click="OpenProjectButton_Click">                        
+                        <StackPanel>
+                            <Image Source="{Binding Path=Photo}" Width="150" Height="100"/>
+                            <TextBlock Text="{Binding Path=Name}"/>
+                        </StackPanel>
+                    </Button>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
     </Grid>
 </UserControl>

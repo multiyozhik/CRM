@@ -1,16 +1,13 @@
-﻿using CRMClientApp.ViewModels;
-using CRMClientApp.Views.UserControls;
+﻿using CRMClientApp.Models;
+using CRMClientApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.Json;
-using System.Collections.ObjectModel;
-using CRMClientApp.Models;
-using System.IO;
 using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace CRMClientApp.Services
 {
@@ -40,21 +37,29 @@ namespace CRMClientApp.Services
             var httpResponse = await httpClient
                 .GetAsync(new Uri(baseAddress, "api/ApiProjects/GetProjects"));
             var projectsList = await httpResponse.Content.ReadFromJsonAsync<List<Project>>();
-            projectsList = projectsList
-                ?.Select(
-                    project => project with { Photo =
-                        string.Concat(baseAddress, "img/", project.Photo)
-                    }
-                )
+            projectsList = projectsList?.Select(
+                project => project with { Photo = string.Concat(baseAddress, "img/", project.Photo) })
                 ?.ToList();
             return projectsList;
         }
 
-        public async Task<Project?> GetProject(Guid projectId)
-        { 
-            var httpResponse = await httpClient.GetAsync(
-                new Uri(baseAddress, $"api/ApiProjects/GetProjectById/{projectId}"));
-            return await httpResponse.Content.ReadFromJsonAsync<Project>();
+        public async Task<List<Service>?> GetServicesList()
+        {
+            var httpResponse = await httpClient
+                .GetAsync(new Uri(baseAddress, "api/ApiServices/GetServices"));
+            var servicesList = await httpResponse.Content.ReadFromJsonAsync<List<Service>>();
+            return servicesList;
+        }
+
+        public async Task<List<Blog>?> GetBlogsList()
+        {
+            var httpResponse = await httpClient
+                .GetAsync(new Uri(baseAddress, "api/ApiBlogs/GetBlogs"));
+            var blogsList = await httpResponse.Content.ReadFromJsonAsync<List<Blog>>();
+            blogsList = blogsList?.Select(
+                blog => blog with { Photo = string.Concat(baseAddress, "img/", blog.Photo) })
+                ?.ToList();
+            return blogsList;
         }
     }
 }

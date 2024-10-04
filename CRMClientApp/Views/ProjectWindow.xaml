@@ -6,11 +6,20 @@
         xmlns:models="clr-namespace:CRMClientApp.Models" 
         d:DataContext="{d:DesignInstance Type=models:Project}"
         mc:Ignorable="d"
-        Title="ProjectWindow" Height="450" Width="800">
-    <Grid>
+        Title="Проекты" 
+        MinWidth="400" MinHeight="300"
+        MaxWidth="1200" MaxHeight="800"        
+        Width="600" Height="400">
+    <Grid Margin="50">
         <StackPanel>
-            <TextBlock Text="{Binding Path=Name}"/>
-            <TextBlock Text="{Binding Path=Description}"/>
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Left" FontWeight="Bold" Foreground="Blue" 
+                           Text="{Binding Path=Name}"/>
+                <Image DockPanel.Dock="Right" Source="{Binding Path=Photo}"/>
+            </DockPanel>
+            <Border>
+                <TextBlock Text="{Binding Path=Description}" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+            </Border>
         </StackPanel>
     </Grid>
 </Window>

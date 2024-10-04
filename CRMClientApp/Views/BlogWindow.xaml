@@ -1,0 +1,19 @@
+﻿<Window x:Class="CRMClientApp.Views.BlogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:CRMClientApp.Models" 
+        d:DataContext="{d:DesignInstance Type=models:Blog}"
+        mc:Ignorable="d"
+        Title="Блог" Height="450" Width="800">
+    <StackPanel Margin="50">
+        <TextBlock FontWeight="Bold" Foreground="Blue" Text="{Binding Path=Name}"/>
+        <TextBlock Text="{Binding Path=CreateAt}"/>
+        <Image Source="{Binding Path=Photo}" Width="200" Height="150"/>
+        <Border>
+            <TextBlock Text="{Binding Path=Description}"
+                       ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        </Border>
+    </StackPanel>
+</Window>

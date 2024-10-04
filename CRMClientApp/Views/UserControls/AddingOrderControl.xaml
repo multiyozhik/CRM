@@ -33,7 +33,7 @@
             <TextBlock Text="Текст сообщения" Padding="5"/>
             <TextBox Text="{Binding Path=AddingOrder.Message, Mode=OneWayToSource}" Padding="5" Height="Auto" TextWrapping="Wrap"/>
         </StackPanel>
-        <Button Grid.Row="3" Grid.Column="2" Width="100" Height="50" 
+        <Button Grid.Row="3" Grid.Column="2" Width="Auto" Height="Auto" 
                 Content="Отправить" 
                 Command="{Binding Path=AddOrderCommand}"/>
     </Grid>

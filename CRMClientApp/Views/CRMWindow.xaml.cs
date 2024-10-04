@@ -27,6 +27,10 @@ namespace CRMClientApp.Views
             var crmViewModel = (CRMViewModel)crmWindow.DataContext;
             crmViewModel.ProjectsList = new ObservableCollection<Project>(
                 await crmClient.GetProjectsList()?? new List<Project>());
+            crmViewModel.ServicesList = new ObservableCollection<Service>(
+                await crmClient.GetServicesList() ?? new List<Service>());
+            crmViewModel.BlogsList = new ObservableCollection<Blog>(
+                await crmClient.GetBlogsList() ?? new List<Blog>());
         }
     }
 }

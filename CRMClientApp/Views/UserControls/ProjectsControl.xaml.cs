@@ -19,7 +19,7 @@ namespace CRMClientApp.Views.UserControls
         private void OpenProjectButton_Click(object sender, RoutedEventArgs e)
         {
             var openProjectButton = (Button)sender;
-            var selectedProject = (Project)(openProjectButton.CommandParameter);
+            var selectedProject = (Project)openProjectButton.DataContext;
             var projectWindow = new ProjectWindow()
             {
                 DataContext = selectedProject
