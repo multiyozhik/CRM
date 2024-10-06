@@ -22,16 +22,16 @@
             <TabItem Header="Главная">
                 <usercontrols:AddingOrderControl/>
             </TabItem>
-            <TabItem Header="Проекты">
+            <TabItem Header="{Binding Path=FieldValues.ProjectMenuItemName}">
                 <usercontrols:ProjectsControl/>
             </TabItem>
-            <TabItem Header="Услуги">
+            <TabItem Header="{Binding Path=FieldValues.ServiceMenuItemName}">
                 <usercontrols:ServicesControl/>
             </TabItem>
-            <TabItem Header="Блог">
+            <TabItem Header="{Binding Path=FieldValues.BlogMenuItemName}">
                 <usercontrols:BlogControl/>
             </TabItem>
-            <TabItem Header="Контакты">
+            <TabItem Header="{Binding Path=FieldValues.ContactsMenuItemName}">
                 <usercontrols:ContactsControl/>
             </TabItem>
         </TabControl>        

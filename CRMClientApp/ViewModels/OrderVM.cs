@@ -1,7 +1,4 @@
-﻿using CRMClientApp.Commands;
-using System;
-
-namespace CRMClientApp.ViewModels
+﻿namespace CRMClientApp.ViewModels
 {
     public class OrderVM
     {

@@ -2,6 +2,8 @@
 using CRMClientApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -13,13 +15,40 @@ namespace CRMClientApp.Services
 {
     public class CRMClient
     {
-
         private readonly Uri baseAddress;
         private static readonly HttpClient httpClient = new();
         public CRMClient(Uri baseAddress)
         {
             this.baseAddress = baseAddress;
             httpClient.BaseAddress = baseAddress;
+        }
+
+        public async Task<FieldValuesViewModel?> GetFieldValues()
+        {
+            return await httpClient.GetFromJsonAsync<FieldValuesViewModel>(
+                new Uri(baseAddress, "api/ApiGeneralInfo/GetFieldValues"));
+        }
+
+        public async Task<ContactsValuesViewModel?> GetContactsValues()
+        {
+            var contactsVM = await httpClient.GetFromJsonAsync<ContactsValuesViewModel>(
+                new Uri(baseAddress, "api/ApiGeneralInfo/GetContactsValues"));
+            contactsVM.MapPath = new Uri(baseAddress, contactsVM.MapPath).ToString();
+            return contactsVM;
+        }
+
+        public async Task<List<SocialMediaLinkVM>> GetSocialMediaLinks()
+        {
+            var linksDict = await httpClient.GetFromJsonAsync<Dictionary<string, string>>(
+                        new Uri(baseAddress, "api/ApiGeneralInfo/GetSocialMediaLinks"));
+            var linkList = linksDict.Select(link =>
+                new SocialMediaLinkVM()
+                {
+                    Icon = new Uri(baseAddress, link.Key.TrimStart('/')).ToString(),
+                    HyperlinkUri = link.Value
+                })
+                .ToList();
+            return linkList;
         }
 
         public async Task AddOrder(OrderVM orderVM)

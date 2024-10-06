@@ -6,6 +6,7 @@ using System.Windows;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CRMClientApp.Views
 {
@@ -16,7 +17,7 @@ namespace CRMClientApp.Views
         public CRMWindow()
         {
             InitializeComponent();
-            crmClient = new CRMClient(baseAddress);
+            crmClient = new CRMClient(baseAddress);  
             DataContext = new CRMViewModel(crmClient);
             Loaded += CRMWindow_Loaded;
         }
@@ -25,6 +26,19 @@ namespace CRMClientApp.Views
         {
             var crmWindow = (Window)sender;
             var crmViewModel = (CRMViewModel)crmWindow.DataContext;
+            crmViewModel.ContactsValues = await crmClient.GetContactsValues()?? new ContactsValuesViewModel();
+            crmViewModel.FieldValues = await crmClient.GetFieldValues() 
+                ?? new FieldValuesViewModel()
+                {
+                    ProjectMenuItemName = "Проекты",
+                    ServiceMenuItemName = "Услуги",
+                    BlogMenuItemName = "Блог",
+                    ContactsMenuItemName = "Контакты",
+                    PrecedingFormText = "Оставить заявку или задать вопрос"
+                };
+
+            crmViewModel.SocialMediaLinksList = new ObservableCollection<SocialMediaLinkVM>(
+                await crmClient.GetSocialMediaLinks());
             crmViewModel.ProjectsList = new ObservableCollection<Project>(
                 await crmClient.GetProjectsList()?? new List<Project>());
             crmViewModel.ServicesList = new ObservableCollection<Service>(

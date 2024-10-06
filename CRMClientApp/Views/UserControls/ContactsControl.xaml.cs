@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using CRMClientApp.ViewModels;
+using System.Diagnostics;
+using System.Windows.Controls;
 
 namespace CRMClientApp.Views.UserControls
 {
@@ -10,6 +12,17 @@ namespace CRMClientApp.Views.UserControls
         public ContactsControl()
         {
             InitializeComponent();
+        }
+
+        private void Btn_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var btn = (Button)sender;
+            var link = (SocialMediaLinkVM)btn.DataContext;
+            var uri = link.HyperlinkUri;
+            var startProcess = new ProcessStartInfo() { 
+                FileName = "explorer.exe",
+                Arguments = uri };
+            Process.Start(startProcess);
         }
     }
 }

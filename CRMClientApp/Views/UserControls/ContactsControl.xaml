@@ -3,26 +3,40 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
              mc:Ignorable="d" 
+             xmlns:local="clr-namespace:CRMClientApp.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=local:CRMViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <DockPanel>
-            <StackPanel DockPanel.Dock="Top">
-                <TextBlock Text="{Binding}"/>
-                <TextBlock Text="Телефон: {Binding}"/>
-                <TextBlock Text="Факс: {Binding}"/>
-                <TextBlock Text="Email: {Binding}"/>
-                <TextBlock Text="{Binding}"/>
-            </StackPanel>
-            <WrapPanel DockPanel.Dock="Bottom">
-                <Image Source="{Binding}" Width="Auto" Height="Auto"/>
-                <Image Source="{Binding}" Width="Auto" Height="Auto"/>
-            </WrapPanel>
-        </DockPanel>
-        <Image Grid.Column="1" Source="{Binding}" Width="Auto" Height="Auto"/>
+        <StackPanel Grid.Column="0">
+            <TextBlock Text="{Binding ContactsValues.Address, StringFormat=Адрес: {0}}"/>
+            <TextBlock Text="{Binding ContactsValues.Phone, StringFormat=Телефон: {0}}"/>
+            <TextBlock Text="{Binding ContactsValues.Fax, StringFormat=Факс: {0}}"/>
+            <TextBlock Text="{Binding ContactsValues.Email, StringFormat=Email: {0}}"/>
+            <TextBlock Text="{Binding ContactsValues.Director, StringFormat=ФИО: {0}}"/>
+            <ListView ItemsSource="{Binding SocialMediaLinksList, 
+                Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Button Click="Btn_Click" Style="{x:Null}" 
+                                Width="30" Height="30">
+                        <svgc:SvgViewbox Source="{Binding Path=Icon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Button>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+        </StackPanel>
+        <Image Grid.Column="1"  Width="300" Height="250" VerticalAlignment="Top"
+                   Source="{Binding ContactsValues.MapPath}"/>
     </Grid>
 </UserControl>
