@@ -8,17 +8,25 @@
         xmlns:viewmodels="clr-namespace:CRMClientApp.ViewModels" 
         d:DataContext="{d:DesignInstance Type=viewmodels:CRMViewModel}"
         mc:Ignorable="d"
-        Title="CRM-System" 
+        Title="CRM-System"
         MinWidth="300" MinHeight="150"
         MaxWidth="1200" MaxHeight="800"        
         Width="800" Height="600">
-    <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Список пользователей"/>
-            <MenuItem Header="Войти"/>
-            <MenuItem Header="Выйти"/>
+    <DockPanel Background="Blue">
+        <Menu DockPanel.Dock="Top" HorizontalAlignment="Right">
+            <MenuItem Header="Список пользователей"
+                      IsEnabled="{Binding Path=IsAdmin, 
+                        UpdateSourceTrigger=PropertyChanged}"/>
+            <MenuItem Header="Войти" 
+                      Command="{Binding LoginCommand}"
+                      IsEnabled="{Binding Path=EnableLoginCommand, 
+                        UpdateSourceTrigger=PropertyChanged}"/>
+            <MenuItem x:Name="LogoutMenuItem" Header="Выйти" 
+                      Command="{Binding LogoutCommand}"
+                      IsEnabled="{Binding Path=IsAdmin, 
+                        UpdateSourceTrigger=PropertyChanged}"/>
         </Menu>
-        <TabControl>            
+        <TabControl>
             <TabItem Header="Главная">
                 <usercontrols:AddingOrderControl/>
             </TabItem>

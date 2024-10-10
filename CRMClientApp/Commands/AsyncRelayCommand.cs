@@ -6,8 +6,8 @@ namespace CRMClientApp.Commands
 {
     public class AsyncRelayCommand : ICommand
     {
-        private Func<object, Task> execute;
-        private Func<object, bool> canExecute;
+        private readonly Func<object, Task> execute;
+        private readonly Func<object, bool> canExecute;
         public AsyncRelayCommand(Func<object, Task> execute, Func<object, bool> canExecute = null) 
         {
             this.execute = execute;

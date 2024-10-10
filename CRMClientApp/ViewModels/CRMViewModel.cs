@@ -1,11 +1,14 @@
 ﻿using CRMClientApp.Commands;
 using CRMClientApp.Models;
 using CRMClientApp.Services;
+using CRMClientApp.Views;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Net.WebSockets;
+using System.Windows.Controls;
+using System.Windows;
 
 namespace CRMClientApp.ViewModels
 {
@@ -20,6 +23,85 @@ namespace CRMClientApp.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
         public event NotifyCollectionChangedEventHandler? CollectionChanged;
 
+        //IsAdmin для авторизации
+
+        private string? currentUserName;
+        public string? CurrentUserName
+        {
+            get => currentUserName;
+            set
+            {
+                currentUserName = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(currentUserName)));
+            }
+        }
+
+        private bool isAdmin = false;
+        public bool IsAdmin
+        {
+            get => isAdmin;
+            set
+            {
+                isAdmin = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(isAdmin)));
+                EnableLoginCommand = false;
+            }
+        }
+
+        private bool enableLoginCommand = true;
+        public bool EnableLoginCommand
+        {
+            get => enableLoginCommand;
+            set
+            {
+                enableLoginCommand = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(enableLoginCommand)));
+            }
+        }
+
+        private AsyncRelayCommand loginCommand;
+        public AsyncRelayCommand LoginCommand
+        {
+            get => loginCommand ?? new AsyncRelayCommand(async obj =>
+            {
+
+                var loginWindow = new LoginWindow()
+                {
+                    DataContext = new LoginViewModel()
+                };
+                var loginWindowResult = loginWindow.ShowDialog();
+
+                if (loginWindowResult is true)
+                {
+                    var loginVM = (LoginViewModel)loginWindow.DataContext;
+                    if (await crmClient.Login(loginVM))
+                    {
+                        IsAdmin = true;
+                        CurrentUserName = loginVM.UserName;
+                    }
+                    else
+                        MessageBox.Show("Пользователь не найден");
+                    return;
+                }
+                else
+                    MessageBox.Show("Ошибка ввода");
+            });
+        }
+
+        private AsyncRelayCommand logoutCommand;
+        public AsyncRelayCommand LogoutCommand
+        {
+            get => logoutCommand ?? new AsyncRelayCommand(async obj =>
+            {
+                await crmClient.Logout();
+                IsAdmin = false;
+                CurrentUserName = default;
+                EnableLoginCommand = true;
+            });
+        }
+
+        //названия вкладок
+
         private FieldValuesViewModel fieldValues;
         public FieldValuesViewModel FieldValues
         {
@@ -30,6 +112,8 @@ namespace CRMClientApp.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(fieldValues)));
             }
         }
+
+        //контакты и соц. сети
 
         private ContactsValuesViewModel contactsValues;
         public ContactsValuesViewModel ContactsValues
@@ -53,6 +137,7 @@ namespace CRMClientApp.ViewModels
             }
         }
 
+        //заявки
         public OrderVM AddingOrder { get; } = new OrderVM();
 
         private AsyncRelayCommand? addOrderCommand; 
@@ -61,6 +146,8 @@ namespace CRMClientApp.ViewModels
             get => addOrderCommand ??= new AsyncRelayCommand(
                 async obj => await crmClient.AddOrder(AddingOrder));
         }
+
+        //проекты
 
         private Project? selectedProject;
         public Project? SelectedProject 
@@ -84,6 +171,8 @@ namespace CRMClientApp.ViewModels
             }
         }
 
+        //сервисы
+
         private Service? selectedService;
         public Service? SelectedService
         {
@@ -105,6 +194,8 @@ namespace CRMClientApp.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ServicesList)));
             }
         }
+        
+        //блог
 
         private Blog? selectedBlog;
         public Blog? SelectedBlog

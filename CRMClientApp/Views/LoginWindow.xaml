@@ -1,0 +1,20 @@
+﻿<Window x:Class="CRMClientApp.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"    
+        xmlns:local="clr-namespace:CRMClientApp.ViewModels"
+        d:DataContext="{d:DesignInstance Type=local:LoginViewModel}"
+        mc:Ignorable="d"
+        Title="LoginWindow" Height="400" Width="300">
+    <StackPanel Margin="30">
+        <TextBlock Text="Имя пользователя"/>
+        <TextBox Text="{Binding Path=UserName}"/>
+        <TextBlock Text="Email"/>
+        <TextBox Text="{Binding Path=Email}"/>
+        <TextBlock Text="Пароль"/>
+        <PasswordBox x:Name="PasswordBox" PasswordChar="*" />
+        <Button x:Name="LoginButton" Content="Войти" Margin="20"
+                Click="LoginButton_Click" />
+    </StackPanel>
+</Window>

@@ -90,5 +90,22 @@ namespace CRMClientApp.Services
                 ?.ToList();
             return blogsList;
         }
+
+        public async Task<bool> Login(LoginViewModel loginVM)
+        {
+            var httpResponse = await httpClient.PostAsync(
+                new Uri(baseAddress, "api/ApiAccount/LogIn"),
+                new StringContent(
+                    JsonSerializer.Serialize(loginVM),
+                    Encoding.UTF8,
+                    "application/json"));
+            return httpResponse.IsSuccessStatusCode;
+        }
+
+        public async Task Logout()
+        {            
+            await httpClient.GetAsync(
+                new Uri(baseAddress, "api/ApiAccount/LogOut"));
+        }
     }
 }
