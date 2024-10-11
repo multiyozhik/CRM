@@ -15,31 +15,35 @@
     <DockPanel Background="Blue">
         <Menu DockPanel.Dock="Top" HorizontalAlignment="Right">
             <MenuItem Header="Список пользователей"
-                      IsEnabled="{Binding Path=IsAdmin, 
+                      Visibility="{Binding Path=LoginVisibility, 
                         UpdateSourceTrigger=PropertyChanged}"/>
             <MenuItem Header="Войти" 
                       Command="{Binding LoginCommand}"
-                      IsEnabled="{Binding Path=EnableLoginCommand, 
+                      Visibility="{Binding Path=LoginVisibility, 
                         UpdateSourceTrigger=PropertyChanged}"/>
             <MenuItem x:Name="LogoutMenuItem" Header="Выйти" 
                       Command="{Binding LogoutCommand}"
-                      IsEnabled="{Binding Path=IsAdmin, 
-                        UpdateSourceTrigger=PropertyChanged}"/>
+                      Visibility="{Binding Path=LogoutVisibility, 
+                        UpdateSourceTrigger=PropertyChanged}"/>           
         </Menu>
         <TabControl>
             <TabItem Header="Главная">
                 <usercontrols:AddingOrderControl/>
             </TabItem>
-            <TabItem Header="{Binding Path=FieldValues.ProjectMenuItemName}">
+            <TabItem Header="{Binding Path=FieldValues.ProjectMenuItemName, 
+                Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <usercontrols:ProjectsControl/>
             </TabItem>
-            <TabItem Header="{Binding Path=FieldValues.ServiceMenuItemName}">
+            <TabItem Header="{Binding Path=FieldValues.ServiceMenuItemName, 
+                Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <usercontrols:ServicesControl/>
             </TabItem>
-            <TabItem Header="{Binding Path=FieldValues.BlogMenuItemName}">
+            <TabItem Header="{Binding Path=FieldValues.BlogMenuItemName, 
+                Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <usercontrols:BlogControl/>
             </TabItem>
-            <TabItem Header="{Binding Path=FieldValues.ContactsMenuItemName}">
+            <TabItem Header="{Binding Path=FieldValues.ContactsMenuItemName, 
+                Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <usercontrols:ContactsControl/>
             </TabItem>
         </TabControl>        

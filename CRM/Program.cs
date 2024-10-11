@@ -41,7 +41,7 @@ void ConfigureServices(IServiceCollection services)
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequireUppercase = false;
         options.Lockout.MaxFailedAccessAttempts = 3;
-        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
     });
 
     services.AddSwaggerGen(options => { });

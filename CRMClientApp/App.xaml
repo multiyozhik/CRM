@@ -26,12 +26,14 @@
             <Setter Property="CornerRadius" Value="3"/>
         </Style>
         <Style TargetType="Button">
-            <Setter Property="Background" Value="Blue"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="MaxWidth" Value="150"/>
-            <Setter Property="MinWidth" Value="100"/>
-            <Setter Property="MaxHeight" Value="50"/>
-            <Setter Property="MinHeight" Value="30"/>
+            <Style.Setters>
+                <Setter Property="Background" Value="Blue"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="MaxWidth" Value="150"/>
+                <Setter Property="MinWidth" Value="100"/>
+                <Setter Property="MaxHeight" Value="50"/>
+                <Setter Property="MinHeight" Value="30"/>
+            </Style.Setters>            
         </Style>
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="5"/>

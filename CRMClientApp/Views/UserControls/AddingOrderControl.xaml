@@ -18,9 +18,10 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" 
-                       Text="Оставить заявку или задать вопрос" Margin="5" Padding="5"/>
+                       Text="{Binding Path=FieldValues.PrecedingFormText}" Margin="5" Padding="5"/>
         <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
             <TextBlock Text="Имя" Padding="5"/>
             <TextBox Text="{Binding Path=AddingOrder.Name, Mode=OneWayToSource}" Padding="5"/>
@@ -36,5 +37,9 @@
         <Button Grid.Row="3" Grid.Column="2" Width="Auto" Height="Auto" 
                 Content="Отправить" 
                 Command="{Binding Path=AddOrderCommand}"/>
+        <Button Grid.Row="4" Grid.Column="2" Width="Auto" Height="Auto"
+                Content="Редактировать" Visibility="{Binding Path=LogoutVisibility, 
+                        UpdateSourceTrigger=PropertyChanged}"
+                Command="{Binding EditOrderControlCommand}"/>
     </Grid>
 </UserControl>

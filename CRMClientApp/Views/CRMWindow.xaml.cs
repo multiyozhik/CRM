@@ -28,15 +28,7 @@ namespace CRMClientApp.Views
             var crmWindow = (Window)sender;
             var crmViewModel = (CRMViewModel)crmWindow.DataContext;
             crmViewModel.ContactsValues = await crmClient.GetContactsValues()?? new ContactsValuesViewModel();
-            crmViewModel.FieldValues = await crmClient.GetFieldValues() 
-                ?? new FieldValuesViewModel()
-                {
-                    ProjectMenuItemName = "Проекты",
-                    ServiceMenuItemName = "Услуги",
-                    BlogMenuItemName = "Блог",
-                    ContactsMenuItemName = "Контакты",
-                    PrecedingFormText = "Оставить заявку или задать вопрос"
-                };
+            crmViewModel.FieldValues = await crmClient.GetFieldValues();
 
             crmViewModel.SocialMediaLinksList = new ObservableCollection<SocialMediaLinkVM>(
                 await crmClient.GetSocialMediaLinks());

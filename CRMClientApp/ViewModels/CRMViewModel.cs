@@ -44,18 +44,29 @@ namespace CRMClientApp.ViewModels
             {
                 isAdmin = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(isAdmin)));
-                EnableLoginCommand = false;
+                LoginVisibility = "visible";
             }
         }
 
-        private bool enableLoginCommand = true;
-        public bool EnableLoginCommand
+        private string loginVisibility = "visible";
+        public string LoginVisibility
         {
-            get => enableLoginCommand;
+            get => loginVisibility;
             set
             {
-                enableLoginCommand = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(enableLoginCommand)));
+                loginVisibility = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(loginVisibility)));
+            }
+        }
+
+        private string logoutVisibility = "collapsed";
+        public string LogoutVisibility
+        {
+            get => logoutVisibility;
+            set
+            {
+                logoutVisibility = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(logoutVisibility)));
             }
         }
 
@@ -78,6 +89,8 @@ namespace CRMClientApp.ViewModels
                     {
                         IsAdmin = true;
                         CurrentUserName = loginVM.UserName;
+                        LoginVisibility = "collapsed";
+                        LogoutVisibility = "visible";
                     }
                     else
                         MessageBox.Show("Пользователь не найден");
@@ -96,7 +109,8 @@ namespace CRMClientApp.ViewModels
                 await crmClient.Logout();
                 IsAdmin = false;
                 CurrentUserName = default;
-                EnableLoginCommand = true;
+                LoginVisibility = "visible";
+                LogoutVisibility = "collapsed";
             });
         }
 
@@ -145,6 +159,31 @@ namespace CRMClientApp.ViewModels
         {
             get => addOrderCommand ??= new AsyncRelayCommand(
                 async obj => await crmClient.AddOrder(AddingOrder));
+        }
+
+        private AsyncRelayCommand editOrderControlCommand;
+        public AsyncRelayCommand EditOrderControlCommand
+        {
+            get => editOrderControlCommand ?? new AsyncRelayCommand(async obj =>
+            {
+                FieldValues = await crmClient.GetFieldValues();
+                var editOrderControlWindow = new EditOrderControlWindow()
+                {
+                    DataContext = FieldValues
+                };
+                var editOrderControlResult = editOrderControlWindow.ShowDialog();
+                if (editOrderControlResult is true)
+                {
+                    var fieldValuesViewModel = (FieldValuesViewModel)editOrderControlWindow.DataContext;
+                    await crmClient.EditOrderControl(fieldValuesViewModel);
+                    FieldValues = await crmClient.GetFieldValues();
+                }
+                else
+                {
+                    MessageBox.Show("Ошибка ввода. Необходимо было корректно ввести все поля");
+                    return;
+                }
+            });
         }
 
         //проекты

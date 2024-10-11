@@ -61,6 +61,16 @@ namespace CRMClientApp.Services
                     "application/json"));
         }
 
+        public async Task EditOrderControl(FieldValuesViewModel fieldValuesViewModel)
+        {
+            await httpClient.PutAsync(
+                new Uri(baseAddress, "api/ApiHome/Edit"),
+                new StringContent(
+                    JsonSerializer.Serialize(fieldValuesViewModel),
+                    Encoding.UTF8,
+                    "application/json"));
+        }
+
         public async Task<List<Project>?> GetProjectsList()
         {
             var httpResponse = await httpClient
