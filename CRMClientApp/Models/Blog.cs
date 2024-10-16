@@ -2,5 +2,12 @@
 
 namespace CRMClientApp.Models
 {
-    public record Blog(Guid Id, string? Name, string? Description, string? Photo, DateTime CreateAt) { }
+    public class Blog
+    {
+        public Guid Id { get; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public string? Photo { get; set; }
+        public DateTime CreateAt { get; set; }
+    }
 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CRMClientApp.ViewModels" 
         d:DataContext="{d:DesignInstance Type=local:FieldValuesViewModel}"
         mc:Ignorable="d"
-        Title="EditOrderWindow" Height="450" Width="800">
+        Title="Редактирование полей" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>

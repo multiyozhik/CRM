@@ -2,5 +2,11 @@
 
 namespace CRMClientApp.Models
 {
-    public record Project(Guid Id, string? Name, string? Description, string? Photo) { };
+    public class Project
+    {
+        public Guid Id { get; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public string? Photo { get; set; }
+    }
 }

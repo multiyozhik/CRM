@@ -1,14 +1,10 @@
 ﻿using CRMClientApp.Models;
-using System.Runtime.CompilerServices;
+using CRMClientApp.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace CRMClientApp.Views.UserControls
 {
-    /// <summary>
-    /// Логика взаимодействия для ProjectsControl.xaml
-    /// </summary>
     public partial class ProjectsControl : UserControl
     {
         public ProjectsControl()
@@ -25,6 +21,38 @@ namespace CRMClientApp.Views.UserControls
                 DataContext = selectedProject
             };
             projectWindow.ShowDialog();
+        }
+
+        private async void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            var newProject = new Project();
+            var projectFormWindow = new ProjectFormWindow(newProject);
+            var projectFormWindowResult = projectFormWindow.ShowDialog();
+            if (projectFormWindowResult == true)
+            {
+                var crmViewModel = (CRMViewModel)((Button)sender).DataContext;
+                await crmViewModel.CrmClient.UploadFile(newProject.Photo);
+                await crmViewModel.CrmClient.AddProject(newProject);
+            }
+        }
+
+        private async void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            var crmViewModel = (CRMViewModel)DataContext;
+            var editedProject = (Project)((Button)sender).DataContext;
+            var projectFormWindow = new ProjectFormWindow(editedProject);
+            var projectFormWindowResult = projectFormWindow.ShowDialog();
+            if (projectFormWindowResult == true)
+            {
+                await crmViewModel.CrmClient.EditProject(editedProject);
+            }
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var crmViewModel = (CRMViewModel)DataContext;
+            var deletedProject = (Project)((Button)sender).DataContext;
+            crmViewModel.CrmClient.DeleteProject(deletedProject);
         }
     }
 }

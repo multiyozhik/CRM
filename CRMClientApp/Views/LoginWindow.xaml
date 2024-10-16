@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CRMClientApp.ViewModels"
         d:DataContext="{d:DesignInstance Type=local:LoginViewModel}"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="400" Width="300">
+        Title="Вход в систему" Height="400" Width="300">
     <StackPanel Margin="30">
         <TextBlock Text="Имя пользователя"/>
         <TextBox Text="{Binding Path=UserName}"/>

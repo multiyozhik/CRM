@@ -14,11 +14,11 @@
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" 
                        Text="{Binding Path=FieldValues.PrecedingFormText}" Margin="5" Padding="5"/>
@@ -38,7 +38,7 @@
                 Content="Отправить" 
                 Command="{Binding Path=AddOrderCommand}"/>
         <Button Grid.Row="4" Grid.Column="2" Width="Auto" Height="Auto"
-                Content="Редактировать" Visibility="{Binding Path=LogoutVisibility, 
+                Content="Редактировать" Visibility="{Binding Path=CollapsedInitialVisibility, Mode=TwoWay, 
                         UpdateSourceTrigger=PropertyChanged}"
                 Command="{Binding EditOrderControlCommand}"/>
     </Grid>

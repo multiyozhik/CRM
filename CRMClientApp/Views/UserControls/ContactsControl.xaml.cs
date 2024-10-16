@@ -24,5 +24,10 @@ namespace CRMClientApp.Views.UserControls
                 Arguments = uri };
             Process.Start(startProcess);
         }
+
+        private void EditContactsButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+
+        }
     }
 }

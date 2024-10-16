@@ -2,22 +2,19 @@
 using CRMClientApp.Models;
 using CRMClientApp.Services;
 using CRMClientApp.Views;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Net.WebSockets;
-using System.Windows.Controls;
 using System.Windows;
 
 namespace CRMClientApp.ViewModels
 {
     public class CRMViewModel : INotifyPropertyChanged
     {
-        private readonly CRMClient crmClient;
+        public CRMClient CrmClient { get; }
         public CRMViewModel(CRMClient crmClient)
         {
-            this.crmClient = crmClient;
+            this.CrmClient = crmClient;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -44,33 +41,33 @@ namespace CRMClientApp.ViewModels
             {
                 isAdmin = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(isAdmin)));
-                LoginVisibility = "visible";
+                VisibleInitialVisibility = "visible";
             }
         }
 
-        private string loginVisibility = "visible";
-        public string LoginVisibility
+        private string visibleInitialVisibility = "visible";
+        public string VisibleInitialVisibility
         {
-            get => loginVisibility;
+            get => visibleInitialVisibility;
             set
             {
-                loginVisibility = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(loginVisibility)));
+                visibleInitialVisibility = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(visibleInitialVisibility)));
             }
         }
 
-        private string logoutVisibility = "collapsed";
-        public string LogoutVisibility
+        private string collapsedInitialVisibility = "collapsed";
+        public string CollapsedInitialVisibility
         {
-            get => logoutVisibility;
+            get => collapsedInitialVisibility;
             set
             {
-                logoutVisibility = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(logoutVisibility)));
+                collapsedInitialVisibility = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(collapsedInitialVisibility)));
             }
         }
 
-        private AsyncRelayCommand loginCommand;
+        private readonly AsyncRelayCommand loginCommand;
         public AsyncRelayCommand LoginCommand
         {
             get => loginCommand ?? new AsyncRelayCommand(async obj =>
@@ -85,12 +82,12 @@ namespace CRMClientApp.ViewModels
                 if (loginWindowResult is true)
                 {
                     var loginVM = (LoginViewModel)loginWindow.DataContext;
-                    if (await crmClient.Login(loginVM))
+                    if (await CrmClient.Login(loginVM))
                     {
                         IsAdmin = true;
                         CurrentUserName = loginVM.UserName;
-                        LoginVisibility = "collapsed";
-                        LogoutVisibility = "visible";
+                        VisibleInitialVisibility = "collapsed";
+                        CollapsedInitialVisibility = "visible";
                     }
                     else
                         MessageBox.Show("Пользователь не найден");
@@ -101,16 +98,16 @@ namespace CRMClientApp.ViewModels
             });
         }
 
-        private AsyncRelayCommand logoutCommand;
+        private readonly AsyncRelayCommand logoutCommand;
         public AsyncRelayCommand LogoutCommand
         {
             get => logoutCommand ?? new AsyncRelayCommand(async obj =>
             {
-                await crmClient.Logout();
+                await CrmClient.Logout();
                 IsAdmin = false;
                 CurrentUserName = default;
-                LoginVisibility = "visible";
-                LogoutVisibility = "collapsed";
+                VisibleInitialVisibility = "visible";
+                CollapsedInitialVisibility = "collapsed";
             });
         }
 
@@ -126,6 +123,7 @@ namespace CRMClientApp.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(fieldValues)));
             }
         }
+
 
         //контакты и соц. сети
 
@@ -158,15 +156,15 @@ namespace CRMClientApp.ViewModels
         public AsyncRelayCommand? AddOrderCommand
         {
             get => addOrderCommand ??= new AsyncRelayCommand(
-                async obj => await crmClient.AddOrder(AddingOrder));
+                async obj => await CrmClient.AddOrder(AddingOrder));
         }
 
-        private AsyncRelayCommand editOrderControlCommand;
+        private readonly AsyncRelayCommand editOrderControlCommand;
         public AsyncRelayCommand EditOrderControlCommand
         {
             get => editOrderControlCommand ?? new AsyncRelayCommand(async obj =>
             {
-                FieldValues = await crmClient.GetFieldValues();
+                FieldValues = await CrmClient.GetFieldValues();
                 var editOrderControlWindow = new EditOrderControlWindow()
                 {
                     DataContext = FieldValues
@@ -175,8 +173,8 @@ namespace CRMClientApp.ViewModels
                 if (editOrderControlResult is true)
                 {
                     var fieldValuesViewModel = (FieldValuesViewModel)editOrderControlWindow.DataContext;
-                    await crmClient.EditOrderControl(fieldValuesViewModel);
-                    FieldValues = await crmClient.GetFieldValues();
+                    await CrmClient.EditOrderControl(fieldValuesViewModel);
+                    FieldValues = await CrmClient.GetFieldValues();
                 }
                 else
                 {
@@ -208,7 +206,8 @@ namespace CRMClientApp.ViewModels
                 projectsList = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(projectsList)));
             }
-        }
+        } 
+
 
         //сервисы
 

@@ -9,10 +9,11 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="50">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="5*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Foreground="Blue" Text="Мы представляем следующие услуги:"/>
+        <TextBlock Grid.Row="0" Foreground="Blue" Text="Мы представляем следующие услуги:"/>
         <ListView Grid.Row="1" x:Name="servicesBlock" ItemsSource="{Binding ServicesList, 
                 Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   SelectedItem="{Binding SelectedService, Mode = OneWayToSource, 
@@ -24,12 +25,31 @@
                             <TextBlock Text="{Binding Path=Name}"/>
                         </Expander.Header>
                         <Expander.Content>
-                            <TextBlock Text="{Binding Path=Description}" 
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Path=Description}" 
                                        ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                                <Button x:Name="EditButton" Style="{x:Null}" 
+                                    Click="EditButton_Click">
+                                    <Image Source="{Binding Source={StaticResource ResourceKey=EditIcon}}" 
+                                       Width="20" Height="20"
+                                       Visibility="{Binding Path=CollapsedInitialVisibility, 
+                                            Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Button>
+                                <Button x:Name="DeleteButton" Style="{x:Null}" Click="DeleteButton_Click">
+                                    <Image Source="{Binding Source={StaticResource ResourceKey=DeleteIcon}}"
+                                       Width="20" Height="20"
+                                       Visibility="{Binding Path=CollapsedInitialVisibility,  
+                                            Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Button>
+                            </StackPanel>
                         </Expander.Content>
                     </Expander>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <Button Grid.Row="2" x:Name="AddButton" Content="Добавить услугу" 
+                Click="AddButton_Click"
+                Visibility="{Binding CollapsedInitialVisibility,  
+                    Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </UserControl>

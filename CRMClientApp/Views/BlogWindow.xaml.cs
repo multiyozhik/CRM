@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace CRMClientApp.Views
 {
-    /// <summary>
-    /// Логика взаимодействия для BlogWindow.xaml
-    /// </summary>
     public partial class BlogWindow : Window
     {
         public BlogWindow()

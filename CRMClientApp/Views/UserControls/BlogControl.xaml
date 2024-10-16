@@ -9,10 +9,11 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="50">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="5*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Foreground="Blue" Text="Блог"/>
+        <TextBlock Grid.Row="0" Foreground="Blue" Text="Блог"/>
         <ListView Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
                   ItemsSource="{Binding BlogsList, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" 
@@ -27,6 +28,21 @@
                             <Image Source="{Binding Path=Photo}" Width="150" Height="100"/>
                             <TextBlock Text="{Binding Path=Name}"/>
                             <TextBlock Text="{Binding Path=Description}"/>
+                            <WrapPanel Orientation="Horizontal">
+                                <Button x:Name="EditButton" Style="{x:Null}" 
+                                    Click="EditButton_Click">
+                                    <Image Source="{Binding Source={StaticResource ResourceKey=EditIcon}}" 
+                                       Width="20" Height="20"
+                                       Visibility="{Binding Path=CollapsedInitialVisibility, 
+                                            Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Button>
+                                <Button x:Name="DeleteButton" Style="{x:Null}" Click="DeleteButton_Click">
+                                    <Image Source="{Binding Source={StaticResource ResourceKey=DeleteIcon}}"
+                                       Width="20" Height="20"
+                                       Visibility="{Binding Path=CollapsedInitialVisibility,  
+                                            Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Button>
+                            </WrapPanel>
                         </StackPanel>
                     </Button>
                 </DataTemplate>
@@ -37,5 +53,9 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
+        <Button x:Name="AddButton" Grid.Row="2" Content="Добавить пост" 
+                Click="AddButton_Click"
+                Visibility="{Binding CollapsedInitialVisibility,  
+                    Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </UserControl>

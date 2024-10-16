@@ -15,35 +15,39 @@
     <DockPanel Background="Blue">
         <Menu DockPanel.Dock="Top" HorizontalAlignment="Right">
             <MenuItem Header="Список пользователей"
-                      Visibility="{Binding Path=LoginVisibility, 
+                      Visibility="{Binding Path=CollapsedInitialVisibility, Mode=TwoWay, 
                         UpdateSourceTrigger=PropertyChanged}"/>
             <MenuItem Header="Войти" 
                       Command="{Binding LoginCommand}"
-                      Visibility="{Binding Path=LoginVisibility, 
+                      Visibility="{Binding Path=VisibleInitialVisibility, Mode=TwoWay,
                         UpdateSourceTrigger=PropertyChanged}"/>
             <MenuItem x:Name="LogoutMenuItem" Header="Выйти" 
                       Command="{Binding LogoutCommand}"
-                      Visibility="{Binding Path=LogoutVisibility, 
+                      Visibility="{Binding Path=CollapsedInitialVisibility, Mode=TwoWay,
                         UpdateSourceTrigger=PropertyChanged}"/>           
         </Menu>
         <TabControl>
-            <TabItem Header="Главная">
+            <TabItem Header="Главная" DataContext="{Binding UpdateSourceTrigger=PropertyChanged}">                     
                 <usercontrols:AddingOrderControl/>
             </TabItem>
             <TabItem Header="{Binding Path=FieldValues.ProjectMenuItemName, 
-                Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     DataContext="{Binding UpdateSourceTrigger=PropertyChanged}">
                 <usercontrols:ProjectsControl/>
             </TabItem>
             <TabItem Header="{Binding Path=FieldValues.ServiceMenuItemName, 
-                Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     DataContext="{Binding UpdateSourceTrigger=PropertyChanged}">
                 <usercontrols:ServicesControl/>
             </TabItem>
             <TabItem Header="{Binding Path=FieldValues.BlogMenuItemName, 
-                Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     DataContext="{Binding UpdateSourceTrigger=PropertyChanged}">
                 <usercontrols:BlogControl/>
             </TabItem>
             <TabItem Header="{Binding Path=FieldValues.ContactsMenuItemName, 
-                Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     DataContext="{Binding UpdateSourceTrigger=PropertyChanged}">
                 <usercontrols:ContactsControl/>
             </TabItem>
         </TabControl>        
