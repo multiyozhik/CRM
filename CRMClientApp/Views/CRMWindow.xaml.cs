@@ -27,6 +27,7 @@ namespace CRMClientApp.Views
         {
             var crmWindow = (Window)sender;
             var crmViewModel = (CRMViewModel)crmWindow.DataContext;
+
             crmViewModel.ContactsValues = await crmClient.GetContactsValues()?? new ContactsValuesViewModel();
             crmViewModel.FieldValues = await crmClient.GetFieldValues();
 

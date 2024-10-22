@@ -36,18 +36,15 @@ namespace CRMSystem.Api
         }
 
         [HttpPost]        
-        public async Task UploadFile(HttpContext context)   //app.MapPost("/upload", async(HttpContext context) =>
+        public async Task<string> UploadFile([FromForm] IFormFile file) 
         {
-            context.Request.ContentType = "image/png";
-            IFormFileCollection files = context.Request.Form.Files;
             var uploadPath = $"{Directory.GetCurrentDirectory()}/wwwroot/img/";
             Directory.CreateDirectory(uploadPath);
-            foreach (var file in files)
-            {
-                string fullPath = $"{uploadPath}/{file.FileName}";
-                using var fileStream = new FileStream(fullPath, FileMode.Create);
-                await file.CopyToAsync(fileStream);
-            }
+            var fileGuidName = Guid.NewGuid().ToString();
+            string fullPath = $"{uploadPath}/{fileGuidName}_{Path.GetFileName(file.FileName)}";
+            using var fileStream = new FileStream(fullPath, FileMode.Create);
+            await file.CopyToAsync(fileStream);
+            return Path.GetFileName(fullPath);
         }
     }
 }

@@ -28,19 +28,21 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding Path=Description}" 
                                        ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-                                <Button x:Name="EditButton" Style="{x:Null}" 
+                                <WrapPanel Orientation="Horizontal">
+                                    <Button x:Name="EditButton" Style="{x:Null}" 
                                     Click="EditButton_Click">
-                                    <Image Source="{Binding Source={StaticResource ResourceKey=EditIcon}}" 
-                                       Width="20" Height="20"
-                                       Visibility="{Binding Path=CollapsedInitialVisibility, 
+                                        <Image Source="/Resourses/img/icon-edit-btn.png" 
+                                           Width="20" Height="20" 
+                                           Visibility="{Binding CollapsedInitialVisibility, 
                                             Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                </Button>
-                                <Button x:Name="DeleteButton" Style="{x:Null}" Click="DeleteButton_Click">
-                                    <Image Source="{Binding Source={StaticResource ResourceKey=DeleteIcon}}"
-                                       Width="20" Height="20"
-                                       Visibility="{Binding Path=CollapsedInitialVisibility,  
+                                    </Button>
+                                    <Button x:Name="DeleteButton" Style="{x:Null}" Click="DeleteButton_Click">
+                                        <Image Source="/Resourses/img/icon-delete-btn.png"  
+                                           Width="20" Height="20" 
+                                           Visibility="{Binding CollapsedInitialVisibility,  
                                             Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                </Button>
+                                    </Button>
+                                </WrapPanel>
                             </StackPanel>
                         </Expander.Content>
                     </Expander>

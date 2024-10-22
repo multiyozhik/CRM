@@ -33,9 +33,11 @@ namespace CRMClientApp.Views.UserControls
             var blogFormWindowResult = blogFormWindow.ShowDialog();
             if (blogFormWindowResult == true)
             {
-                var crmViewModel = ((Button)sender).DataContext as CRMViewModel;
-                await crmViewModel.CrmClient.UploadFile(newBlog.Photo);
+                var crmViewModel = (CRMViewModel)((Button)sender).DataContext;
+                newBlog.Photo = await crmViewModel.CrmClient.UploadFile(newBlog.Photo);
                 await crmViewModel.CrmClient.AddBlog(newBlog);
+                newBlog.Photo = crmViewModel.CrmClient.GetPhotoUrl(newBlog.Photo);
+                crmViewModel.BlogsList.Add(newBlog);
             }
         }
 

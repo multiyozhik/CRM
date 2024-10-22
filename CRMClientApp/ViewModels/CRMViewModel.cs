@@ -41,12 +41,12 @@ namespace CRMClientApp.ViewModels
             {
                 isAdmin = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(isAdmin)));
-                VisibleInitialVisibility = "visible";
+                VisibleInitialVisibility = Visibility.Visible;
             }
         }
 
-        private string visibleInitialVisibility = "visible";
-        public string VisibleInitialVisibility
+        private Visibility visibleInitialVisibility = Visibility.Visible;
+        public Visibility VisibleInitialVisibility
         {
             get => visibleInitialVisibility;
             set
@@ -56,8 +56,8 @@ namespace CRMClientApp.ViewModels
             }
         }
 
-        private string collapsedInitialVisibility = "collapsed";
-        public string CollapsedInitialVisibility
+        private Visibility collapsedInitialVisibility = Visibility.Collapsed;
+        public Visibility CollapsedInitialVisibility
         {
             get => collapsedInitialVisibility;
             set
@@ -86,8 +86,8 @@ namespace CRMClientApp.ViewModels
                     {
                         IsAdmin = true;
                         CurrentUserName = loginVM.UserName;
-                        VisibleInitialVisibility = "collapsed";
-                        CollapsedInitialVisibility = "visible";
+                        VisibleInitialVisibility = Visibility.Collapsed;
+                        CollapsedInitialVisibility = Visibility.Visible;
                     }
                     else
                         MessageBox.Show("Пользователь не найден");
@@ -106,8 +106,8 @@ namespace CRMClientApp.ViewModels
                 await CrmClient.Logout();
                 IsAdmin = false;
                 CurrentUserName = default;
-                VisibleInitialVisibility = "visible";
-                CollapsedInitialVisibility = "collapsed";
+                VisibleInitialVisibility = Visibility.Visible;
+                CollapsedInitialVisibility = Visibility.Collapsed;
             });
         }
 

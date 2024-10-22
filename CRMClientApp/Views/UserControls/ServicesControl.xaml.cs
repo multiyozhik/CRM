@@ -19,8 +19,9 @@ namespace CRMClientApp.Views.UserControls
             var serviceFormWindowResult = serviceFormWindow.ShowDialog();
             if (serviceFormWindowResult == true)
             {
-                var crmViewModel = ((Button)sender).DataContext as CRMViewModel;
+                var crmViewModel = (CRMViewModel)((Button)sender).DataContext;
                 await crmViewModel.CrmClient.AddService(newService);
+                crmViewModel.ServicesList.Add(newService);
             }
         }
 

@@ -1,0 +1,26 @@
+﻿<Window x:Class="CRMClientApp.Views.LinkFormWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"             
+        xmlns:local="clr-namespace:CRMClientApp.ViewModels" 
+        d:DataContext="{d:DesignInstance Type=local:SocialMediaLinkVM}"
+        mc:Ignorable="d"
+        Title="Добавление ссылки на социальную сеть" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <Label Content="Ссылка на социальную сеть:" HorizontalContentAlignment="Center"/>
+            <TextBox Width="300" Text="{Binding Path=HyperlinkUri, 
+                Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button x:Name="AddIconButton" Grid.Row="1" Content="Добавить иконку" 
+                Click="AddIconButton_Click"/>
+        </StackPanel>
+        <Button Grid.Row="1" x:Name="SaveLinkButton" Content="Сохранить" 
+                Click="SaveLinkButton_Click"/>
+    </Grid>
+</Window>

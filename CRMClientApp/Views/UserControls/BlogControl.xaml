@@ -30,16 +30,17 @@
                             <TextBlock Text="{Binding Path=Description}"/>
                             <WrapPanel Orientation="Horizontal">
                                 <Button x:Name="EditButton" Style="{x:Null}" 
-                                    Click="EditButton_Click">
-                                    <Image Source="{Binding Source={StaticResource ResourceKey=EditIcon}}" 
-                                       Width="20" Height="20"
-                                       Visibility="{Binding Path=CollapsedInitialVisibility, 
+                                        Click="EditButton_Click">
+                                    <Image Source="/Resourses/img/icon-edit-btn.png" 
+                                           Width="20" Height="20"
+                                           Visibility="{Binding CollapsedInitialVisibility, 
                                             Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Button>
-                                <Button x:Name="DeleteButton" Style="{x:Null}" Click="DeleteButton_Click">
-                                    <Image Source="{Binding Source={StaticResource ResourceKey=DeleteIcon}}"
-                                       Width="20" Height="20"
-                                       Visibility="{Binding Path=CollapsedInitialVisibility,  
+                                <Button x:Name="DeleteButton" Style="{x:Null}" 
+                                        Click="DeleteButton_Click">
+                                    <Image Source="/Resourses/img/icon-delete-btn.png" 
+                                           Width="20" Height="20" 
+                                           Visibility="{Binding CollapsedInitialVisibility,  
                                             Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Button>
                             </WrapPanel>

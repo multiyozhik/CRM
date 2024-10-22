@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace CRMSystem.Models
 {
@@ -26,17 +27,23 @@ namespace CRMSystem.Models
 
         public async Task Update(Project project)
         {
-            var updatingProject = await GetProjectById(project.Id);
-            updatingProject = updatingProject with {
-                Name = project.Name, Description = project.Description, Photo = project.Photo };
-            context.Update(updatingProject);
+            var count = await context.Projects.Where(p => p.Id == project.Id).ExecuteUpdateAsync(
+                setters => setters
+                    .SetProperty(p => p.Name, project.Name)
+                    .SetProperty(p => p.Description, project.Description)
+                    .SetProperty(p => p.Photo, project.Photo));
+
+            //var updatingProject = await GetProjectById(project.Id);
+            //updatingProject = updatingProject with {
+            //    Name = project.Name, Description = project.Description, Photo = project.Photo };
+            //context.Update(updatingProject);
             await context.SaveChangesAsync();
         }
 
-        public async Task Delete(Guid id)
+        public async Task Delete(Project project)
         {
-            var project = await GetProjectById(id);
-            if (project is not null) context.Projects.Remove(project);
+            var count = context.Projects
+                .Where(p => p.Id == project.Id).ExecuteDelete(); //эффективнее, чем context.Projects.Remove(project);
             await context.SaveChangesAsync();
         }
     }

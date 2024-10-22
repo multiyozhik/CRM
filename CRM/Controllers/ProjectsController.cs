@@ -56,9 +56,9 @@ namespace CRMSystem.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        public async Task<IActionResult> Delete([FromRoute] Project project)
         {
-            await model.Delete(id);
+            await model.Delete(project);
             return RedirectToAction("Index");
         }
     }

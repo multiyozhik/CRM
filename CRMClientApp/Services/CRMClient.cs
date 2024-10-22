@@ -23,12 +23,19 @@ namespace CRMClientApp.Services
             httpClient.BaseAddress = baseAddress;
         }
 
+
+        //формирование адреса картинки для клиента
+
+        public string GetPhotoUrl(string photoName)
+            => string.Concat(baseAddress.ToString(), "img/", photoName);
+
         public async Task<FieldValuesViewModel?> GetFieldValues()
         {
             return await httpClient.GetFromJsonAsync<FieldValuesViewModel>(
                 new Uri(baseAddress, "api/ApiGeneralInfo/GetFieldValues"));
         }
 
+        //контакты
         public async Task<ContactsValuesViewModel?> GetContactsValues()
         {
             var contactsVM = await httpClient.GetFromJsonAsync<ContactsValuesViewModel>(
@@ -49,6 +56,23 @@ namespace CRMClientApp.Services
                 })
                 .ToList();
             return linkList;
+        }
+
+        public async Task AddLink(SocialMediaLinkVM newLink)
+        {
+            await httpClient.PostAsync(
+                new Uri(baseAddress, "api/ApiContacts/SaveNewLink"), 
+                new StringContent(
+                    JsonSerializer.Serialize(newLink),
+                    Encoding.UTF8,
+                    "application/json"));
+        }
+
+        public async Task DeleteLink(string iconPath)
+        {
+            await httpClient.PostAsync(
+                new Uri(baseAddress, "api/ApiContacts/Delete"),
+                new StringContent(iconPath));
         }
 
         //заявки
@@ -81,48 +105,41 @@ namespace CRMClientApp.Services
                 .GetAsync(new Uri(baseAddress, "api/ApiProjects/GetProjects"));
             var projectsList = await httpResponse.Content.ReadFromJsonAsync<List<Project>>();
             projectsList = projectsList?.Select(project => {
-                project.Photo = string.Concat(baseAddress, "img/", project.Photo);
+                project.Photo = GetPhotoUrl(project.Photo);
                 return project; 
             }).ToList();
             return projectsList;
         }
 
-        public async Task UploadFile(string filePath)
+        public async Task<string> UploadFile(string filePath)
         {
             using var multipartFormContent = new MultipartFormDataContent();
             var fileStreamContent = new StreamContent(File.OpenRead(filePath));
 
             fileStreamContent.Headers.ContentType = new MediaTypeHeaderValue("image/png");
             multipartFormContent.Add(fileStreamContent, "file", Path.GetFileName(filePath));
-            try
-            {
-                var s = await httpClient.PostAsync(new Uri(baseAddress, "api/ApiGeneralInfo/UploadFile"), multipartFormContent);
-            }
-            catch(Exception ex) 
-            {
-
-            }
-            
+            var httpResponse = await httpClient
+                .PostAsync(new Uri(baseAddress, "api/ApiGeneralInfo/UploadFile"), multipartFormContent);
+            return await httpResponse.Content.ReadAsStringAsync();
         }
     
         public async Task AddProject(Project project)
         {
+            var content = JsonContent.Create(project);
             await httpClient.PostAsync(
-                new Uri(baseAddress, "api/ApiProjects/Add"),
-                new StringContent(JsonSerializer.Serialize(project), Encoding.UTF8, "application/json"));
+                new Uri(baseAddress, "api/ApiProjects/Add"), content);
         }
 
         public async Task EditProject(Project project)
         {
-            await httpClient.PutAsync(
-                new Uri(baseAddress, "api/ApiProjects/Update"),
-                new StringContent(JsonSerializer.Serialize(project), Encoding.UTF8, "application/json"));
+            var content = JsonContent.Create(project);
+            await httpClient.PutAsync(new Uri(baseAddress, "api/ApiProjects/Update"), content);
         }
 
         public async Task DeleteProject(Project project)
         {
-            await httpClient.PostAsync(new Uri(baseAddress, "api/ApiProjects/Delete"), 
-                new StringContent(project.Id.ToString()));
+            var content = JsonContent.Create(project);
+            await httpClient.PostAsync(new Uri(baseAddress, "api/ApiProjects/Delete"), content);
         }
 
         //услуги

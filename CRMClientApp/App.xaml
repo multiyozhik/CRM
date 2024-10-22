@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="/Views/CRMWindow.xaml">
     <Application.Resources>
-        <Image x:Key="EditIcon" Source="/Resources/img/icon-edit-btn.png" Width="20" Height="20"/>
-        <Image x:Key="DeleteIcon" Source="/Resources/img/icon-delete-btn.png" Width="20" Height="20"/>
+        <Image x:Key="EditIcon" Source="Resourses/img/icon-edit-btn.png" Width="20" Height="20"/>
+        <Image x:Key="DeleteIcon" Source="Resourses/img/icon-delete-btn.png" Width="20" Height="20"/>
         <Style TargetType="MenuItem">
             <Style.Setters>
                 <Setter Property="Background" Value="Blue"/>

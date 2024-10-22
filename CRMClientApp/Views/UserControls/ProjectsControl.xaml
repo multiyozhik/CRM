@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"             
-             mc:Ignorable="d" 
+             mc:Ignorable="d"              
              xmlns:local="clr-namespace:CRMClientApp.ViewModels" 
              d:DataContext="{d:DesignInstance Type=local:CRMViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="50">
+    <Grid x:Name="ProjectsGrid" Margin="50">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -22,26 +22,24 @@
                     NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel>
+                    <StackPanel>                       
                         <Button x:Name="OpenProjectButton" Style="{x:Null}" Width="250" Height="250"
                                         Click="OpenProjectButton_Click">
                             <Image Source="{Binding Path=Photo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                    Width="150" Height="100"/>
                         </Button>
                         <TextBlock Text="{Binding Path=Name}"/>
-                        <WrapPanel Orientation="Horizontal">
+                        <WrapPanel Orientation="Horizontal" 
+                                   Visibility="{Binding DataContext.CollapsedInitialVisibility, RelativeSource={RelativeSource AncestorType=Window}}">
                             <Button x:Name="EditButton" Style="{x:Null}" 
                                     Click="EditButton_Click">
-                                <Image Source="{Binding Source={StaticResource ResourceKey=EditIcon}}" 
-                                       Width="20" Height="20"
-                                       Visibility="{Binding Path=CollapsedInitialVisibility, 
-                                            Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Image Source="/Resourses/img/icon-edit-btn.png" 
+                                       Width="20" Height="20"/>
                             </Button>
-                            <Button x:Name="DeleteButton" Style="{x:Null}" Click="DeleteButton_Click">
-                                <Image Source="{Binding Source={StaticResource ResourceKey=DeleteIcon}}"
-                                       Width="20" Height="20"
-                                       Visibility="{Binding Path=CollapsedInitialVisibility,  
-                                            Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button x:Name="DeleteButton" Style="{x:Null}"                                    
+                                    Click="DeleteButton_Click" >
+                                <Image Source="/Resourses/img/icon-delete-btn.png" 
+                                       Width="20" Height="20"/>
                             </Button>
                         </WrapPanel>                        
                     </StackPanel>

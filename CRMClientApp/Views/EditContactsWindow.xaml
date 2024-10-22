@@ -1,0 +1,36 @@
+﻿<Window x:Class="CRMClientApp.Views.EditContactsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CRMClientApp.ViewModels"
+        mc:Ignorable="d" 
+        d:DataContext="{d:DesignInstance Type=local:CRMViewModel}" 
+        d:DesignHeight="450" d:DesignWidth="800" 
+        Title="Добавить/редактировать ссылки" Height="450" Width="800">
+    <Grid Margin="50">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ListView Grid.Row="0" ItemsSource="{Binding Path=SocialMediaLinksList, 
+            Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding Path=Icon, Mode=OneWayToSource, 
+                            UpdateSourceTrigger=PropertyChanged}" Width="20" Height="20"/>
+                        <TextBox Text="{Binding Path=HyperlinkUri, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+                        <Button x:Name="DeleteLinkButton" Click="DeleteLinkButton_Click">
+                            <Image Source="/Resourses/img/icon-delete-btn.png"
+                               Width="20" Height="20"/>
+                        </Button>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button x:Name="AddLinkButton" Grid.Row="1" 
+                Content="+Добавить еще" Click="AddLinkButton_Click"/>
+    </Grid>
+</Window>

@@ -1,12 +1,10 @@
 ﻿using CRMClientApp.ViewModels;
 using System.Diagnostics;
+using System.Threading.Channels;
 using System.Windows.Controls;
 
 namespace CRMClientApp.Views.UserControls
 {
-    /// <summary>
-    /// Логика взаимодействия для ContactsControl.xaml
-    /// </summary>
     public partial class ContactsControl : UserControl
     {
         public ContactsControl()
@@ -27,7 +25,13 @@ namespace CRMClientApp.Views.UserControls
 
         private void EditContactsButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            var editButton = (Button)sender;
+            var crmViewModel = (CRMViewModel)editButton.DataContext;
+            var editContactsWindow = new EditContactsWindow()
+            {
+                DataContext = crmViewModel
+            };
+            editContactsWindow.ShowDialog();
         }
     }
 }
