@@ -50,6 +50,12 @@
                      DataContext="{Binding UpdateSourceTrigger=PropertyChanged}">
                 <usercontrols:ContactsControl/>
             </TabItem>
+            <TabItem Header="Рабочий стол" 
+                     DataContext="{Binding UpdateSourceTrigger=PropertyChanged}"
+                     Visibility="{Binding DataContext.CollapsedInitialVisibility, 
+                        RelativeSource={RelativeSource AncestorType=Window}}">
+                <usercontrols:DesktopControl/>
+            </TabItem>
         </TabControl>        
     </DockPanel>
 </Window>

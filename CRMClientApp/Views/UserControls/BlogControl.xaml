@@ -21,31 +21,27 @@
                     NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Button x:Name="BlogCardButton" Style="{x:Null}" Width="250" Height="250"
-                            Click="BlogCardButton_Click">
-                        <StackPanel>
-                            <TextBlock Text="{Binding Path=CreateAt}"/>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Path=CreateAt, StringFormat=d, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button x:Name="OpenBlogButton" Style="{x:Null}" Width="250" Height="250"
+                            Click="OpenBlogButton_Click">
                             <Image Source="{Binding Path=Photo}" Width="150" Height="100"/>
-                            <TextBlock Text="{Binding Path=Name}"/>
-                            <TextBlock Text="{Binding Path=Description}"/>
-                            <WrapPanel Orientation="Horizontal">
-                                <Button x:Name="EditButton" Style="{x:Null}" 
-                                        Click="EditButton_Click">
-                                    <Image Source="/Resourses/img/icon-edit-btn.png" 
-                                           Width="20" Height="20"
-                                           Visibility="{Binding CollapsedInitialVisibility, 
-                                            Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                </Button>
-                                <Button x:Name="DeleteButton" Style="{x:Null}" 
-                                        Click="DeleteButton_Click">
-                                    <Image Source="/Resourses/img/icon-delete-btn.png" 
-                                           Width="20" Height="20" 
-                                           Visibility="{Binding CollapsedInitialVisibility,  
-                                            Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                </Button>
-                            </WrapPanel>
-                        </StackPanel>
-                    </Button>
+                        </Button>
+                        <TextBlock Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="{Binding Path=Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <WrapPanel Orientation="Horizontal" 
+                                   Visibility="{Binding DataContext.CollapsedInitialVisibility, 
+                                        RelativeSource={RelativeSource AncestorType=Window}}">
+                            <Button x:Name="EditButton" Style="{x:Null}" Click="EditButton_Click">
+                                <Image Source="/Resourses/img/icon-edit-btn.png" 
+                                           Width="20" Height="20"/>
+                            </Button>
+                            <Button x:Name="DeleteButton" Style="{x:Null}" Click="DeleteButton_Click">
+                                <Image Source="/Resourses/img/icon-delete-btn.png" 
+                                           Width="20" Height="20"/>
+                            </Button>
+                        </WrapPanel>
+                    </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.ItemsPanel>

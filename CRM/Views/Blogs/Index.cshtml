@@ -20,20 +20,32 @@
                 <p>
                     <time class="article" datetime=@blog.CreateAt.ToString()>@blog.CreateAt.ToString("D")</time>
                 </p>
-                <a href="/Blogs/ArticleDescription">
+                <a href="/Blogs/ArticleDescription/@blog.Id">
                     <img src="~/img/@blog.Photo" alt="blog photo" class="blog">
                 </a>
                 <div class="article">
                     <h5 class="blog-text blog-card-title">@blog.Name</h5>
                     <p class="blog-text">@blog.Description</p>
                 </div>
-            </article>
-        }
-        @if (isInRole)
-        {
-            <div class="edit-wrapper">
-                <a class="btn" href="/Blogs/Add">Добавить пост</a>
-            </div>
+                @if (isInRole)
+                {
+                    <div>
+                        <form class="icons-block" method="post" asp-controller="Blogs" asp-action="Delete" asp-route-id="@blog.Id">
+                            <a class="icon-btn" href="/Blogs/Update/@blog.Id">
+                                <img src="~/img/icon-edit-btn.png" alt="edit button" />
+                            </a>
+                            <input class="icon-btn delete-icon-btn" type="image" alt="delete button"
+                                   src="~/img/icon-delete-btn.png" />
+                        </form>
+                    </div>
+                }
+            </article>            
         }
     </section>
+    @if (isInRole)
+    {
+        <div class="edit-wrapper">
+            <a class="btn" href="/Blogs/Add">Добавить пост</a>
+        </div>
+    }
 </main>

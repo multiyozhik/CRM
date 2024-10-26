@@ -1,5 +1,6 @@
 ﻿using CRMClientApp.Models;
 using CRMClientApp.ViewModels;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -15,10 +16,10 @@ namespace CRMClientApp.Views.UserControls
             InitializeComponent();
         }
 
-        private void BlogCardButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void OpenBlogButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var blogCardButton = (Button)sender;
-            var selectedBlog = (Blog)blogCardButton.DataContext;
+            var openBlogButton = (Button)sender;
+            var selectedBlog = (Blog)openBlogButton.DataContext;
             var blogWindow = new BlogWindow() 
             { 
                 DataContext = selectedBlog 
@@ -34,30 +35,40 @@ namespace CRMClientApp.Views.UserControls
             if (blogFormWindowResult == true)
             {
                 var crmViewModel = (CRMViewModel)((Button)sender).DataContext;
-                newBlog.Photo = await crmViewModel.CrmClient.UploadFile(newBlog.Photo);
-                await crmViewModel.CrmClient.AddBlog(newBlog);
-                newBlog.Photo = crmViewModel.CrmClient.GetPhotoUrl(newBlog.Photo);
+                newBlog.Photo = await crmViewModel.CrmClient.UploadFile(newBlog.Photo, "image/png");
+                newBlog.Id = await crmViewModel.CrmClient.AddBlog(newBlog);
+                newBlog.Photo = crmViewModel.CrmClient.GetUrlFileName(newBlog.Photo);
                 crmViewModel.BlogsList.Add(newBlog);
             }
         }
 
         private async void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            var crmViewModel = (CRMViewModel)DataContext;
-            var editedBlog = (Blog)((Button)sender).DataContext;
-            var blogFormWindow = new BlogFormWindow(editedBlog);
+            var button = (Button)sender;
+            var blog = (Blog)button.DataContext;
+            var blogFormWindow = new BlogFormWindow(blog);
             var blogFormWindowResult = blogFormWindow.ShowDialog();
             if (blogFormWindowResult == true)
             {
-                await crmViewModel.CrmClient.EditBlog(editedBlog);
+                var crmViewModel = (CRMViewModel)DataContext;
+                blog.Photo = await crmViewModel.CrmClient.UploadFile(blog.Photo, "image/png");
+                await crmViewModel.CrmClient.EditBlog(blog);
+                var displayedBlog = blog;
+                displayedBlog.Photo = crmViewModel.CrmClient.GetUrlFileName(blog.Photo);
+                int indexOfBlog = crmViewModel.BlogsList.IndexOf(blog);
+                crmViewModel.BlogsList.Remove(blog);
+                crmViewModel.BlogsList.Insert(indexOfBlog, displayedBlog);
             }
         }
 
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
+            var button = (Button)sender;
+            var blog = (Blog)button.DataContext;
             var crmViewModel = (CRMViewModel)DataContext;
-            var deletedBlog = (Blog)((Button)sender).DataContext;
-            crmViewModel.CrmClient.DeleteBlog(deletedBlog);
+            await crmViewModel.CrmClient.DeleteBlog(blog.Id);
+            await crmViewModel.CrmClient.DeleteFile(System.IO.Path.GetFileName(blog.Photo));
+            crmViewModel.BlogsList.Remove(blog);
         }
     }
 }

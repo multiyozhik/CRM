@@ -184,6 +184,35 @@ namespace CRMClientApp.ViewModels
             });
         }
 
+        //рабочий стол
+
+        private Order? selectedOrder;
+        public Order? SelectedOrder
+        {
+            get => selectedOrder;
+            set
+            {
+                selectedOrder = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedOrder)));
+            }
+        }
+
+        private ObservableCollection<Order>? ordersList;
+        public ObservableCollection<Order>? OrdersList
+        {
+            get => ordersList;
+            set
+            {
+                ordersList = value;
+                OrdersListCount = (ordersList is null)? 0: ordersList.Count;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OrdersList)));
+            }
+        }
+
+        public int OrdersListCount { get;  private set; }
+
+
+
         //проекты
 
         private Project? selectedProject;
@@ -245,6 +274,7 @@ namespace CRMClientApp.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedBlog)));
             }
         }
+
         private ObservableCollection<Blog>? blogsList;
         public ObservableCollection<Blog>? BlogsList
         {

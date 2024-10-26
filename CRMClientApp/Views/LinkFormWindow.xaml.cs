@@ -21,19 +21,19 @@ namespace CRMClientApp.Views
     /// </summary>
     public partial class LinkFormWindow : Window
     {
-        public LinkFormWindow()
+        public LinkFormWindow(SocialMediaLinkVM link)
         {
             InitializeComponent();
+            DataContext = link;
         }
 
         private void AddIconButton_Click(object sender, RoutedEventArgs e)
         {
-            var addIconButton = (Button)sender;
             var openFileDialog = new OpenFileDialog();
             bool? openFileDialogResult = openFileDialog.ShowDialog();
             if (openFileDialogResult == true)
             {
-                ((SocialMediaLinkVM)addIconButton.DataContext).Icon = openFileDialog.FileName;
+                ((SocialMediaLinkVM)DataContext).Icon = openFileDialog.FileName;                
             }
         }
 

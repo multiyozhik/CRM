@@ -22,21 +22,20 @@ namespace CRMSystem.Api
             => await model.GetProjectsList();
 
         [HttpPost]
-        public async Task Add([FromBody] ProjectDataFromRequest projectData)
-            => await model.Add(projectData.Name, projectData.Description, projectData.Photo);
-
-        //[HttpGet("{id}")]
-        //public async Task<Project> GetProjectById([FromRoute] Guid id)
-        //    => await model.GetProjectById(id);
+        public async Task<Guid> Add([FromBody] ProjectDataFromRequest projectData)
+        {
+            var id = await model.Add(projectData.Name, projectData.Description, projectData.Photo);
+            return id;
+        }
 
         [HttpPut]
         public async Task Update([FromBody] Project project)
             => await model.Update(project);
 
 
-        [HttpPost]
-        public async Task Delete([FromBody] Project project)
-            => await model.Delete(project);
+        [HttpDelete("{id}")]
+        public async Task Delete([FromRoute] Guid id)
+            => await model.Delete(id);
     }
 
     public record ProjectDataFromRequest(string Name, string Description, string Photo);

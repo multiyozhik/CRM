@@ -5,30 +5,26 @@
     var FieldValuesVM = JsonSerializer.Deserialize<FieldValuesViewModel>(fs);
     ViewData["Title"] = FieldValuesVM?.BlogMenuItemName ?? "Блог";
 }
+@model Blog
 
 <main class="container">
     <div class="container-title">
         <h2>
-            1С: Производственная безопасность
+            @Model.Name
         </h2>
     </div>
     <div class="separator-line"></div>
     <section class="description-block">
         <div>
-            <p><time datetime="2022-06-29">29 июня 2022 г.</time></p>
+            <p><time datetime=@Model.CreateAt.ToShortDateString()>@Model.CreateAt.ToShortDateString()</time></p>
         </div>
         <div class="article-desription-block">
             <div>
-                <img class="blog" src="/img/blog-1.png" alt="blog-1 photo"/>
+                <img class="blog" src="~/img/@Model.Photo" alt="photo"/>
             </div>
-            <article class="article-block">
-                <p class="article">
-                    Решения обеспечивают автоматизацию 
-                </p>
-                <form class="btn-back-wrapper" action="/Blog/Index" method="get">
-                    <input class="btn btn-right" type="submit" value="Назад">
-                </form>
-            </article>            
+            <article class="article">
+                @Model.Description
+            </article>
         </div>
     </section>
 </main>

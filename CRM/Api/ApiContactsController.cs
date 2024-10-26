@@ -12,20 +12,20 @@ namespace CRMSystem.Api
     [Authorize]
     public class ApiContactsController : Controller
     {
-        [HttpPost("{logo}")]
-        public async Task Delete([FromRoute] string logo)
+        [HttpPost]
+        public async Task Delete([FromBody] string logo)
         {
-            var linksDict = await Deserialize("./wwwroot/files/social-media-links.json");
+            var linksDict = await Deserialize("/files/social-media-links.json");
             linksDict?.Remove(logo);
-            await Serialize("./wwwroot/files/social-media-links.json", linksDict);
+            await Serialize("/files/social-media-links.json", linksDict);
         }
 
         [HttpPost]
-        public async Task SaveNewLink(SocialMediaLinkDataFromRequest link)
-        {
-            var linksDict = await Deserialize("./wwwroot/files/social-media-links.json");
+        public async Task SaveNewLink([FromBody] SocialMediaLinkDataFromRequest link)
+        {            
+            var linksDict = await Deserialize("/files/social-media-links.json");
             linksDict?.Add($"/img/{link.IconPath}", link.HyperlinkUri);
-            await Serialize("./wwwroot/files/social-media-links.json", linksDict);
+            await Serialize("/files/social-media-links.json", linksDict);
         }
 
         [NonAction]

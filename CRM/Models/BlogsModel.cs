@@ -17,30 +17,28 @@ namespace CRMSystem.Models
         public async Task<Blog?> GetBlogById(Guid id)
             => await context.Blogs.FirstOrDefaultAsync(blog => blog.Id == id);
 
-        public async Task Add([FromForm] string name, string descriptor, string photo)
+        public async Task<Guid> Add(string name, string descriptor, string photo)
         {
-            await context.Blogs.AddAsync(new Blog(Guid.NewGuid(), name, descriptor, photo, 
+            var blogId = Guid.NewGuid();
+            await context.Blogs.AddAsync(new Blog(blogId, name, descriptor, photo, 
                 DateTime.Today));
             context.SaveChanges();
+            return blogId;
         }
 
         public async Task Update(Blog blog)
         {
-            var updatingBlog = await GetBlogById(blog.Id);
-            updatingBlog = updatingBlog with
-            {
-                Name = blog.Name,
-                Description = blog.Description,
-                Photo = blog.Photo
-            };
-            context.Update(updatingBlog);
+            var count = await context.Blogs.Where(b => b.Id == blog.Id).ExecuteUpdateAsync(
+                setters => setters
+                    .SetProperty(b => b.Name, blog.Name)
+                    .SetProperty(b => b.Description, blog.Description)
+                    .SetProperty(b => b.Photo, blog.Photo));
             await context.SaveChangesAsync();
         }
 
         public async Task Delete(Guid id)
         {
-            var blog = await GetBlogById(id);
-            if (blog is not null) context.Blogs.Remove(blog);
+            var count = await context.Blogs.Where(b => b.Id == id).ExecuteDeleteAsync();
             await context.SaveChangesAsync();
         }
     }

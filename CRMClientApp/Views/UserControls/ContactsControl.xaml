@@ -44,7 +44,8 @@
                    Source="{Binding ContactsValues.MapPath}"/>
         <Button Grid.Row="1" Grid.Column="1" Width="Auto" Height="Auto"
                 x:Name="EditContactsButton" Click="EditContactsButton_Click"
-                Content="Редактировать" Visibility="{Binding CollapsedInitialVisibility, Mode=TwoWay, 
-                        UpdateSourceTrigger=PropertyChanged}"/>
+                Content="Редактировать" 
+                Visibility="{Binding DataContext.CollapsedInitialVisibility, 
+                    RelativeSource={RelativeSource AncestorType=Window}}"/>
     </Grid>
 </UserControl>

@@ -23,9 +23,10 @@ namespace CRMSystem.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult ArticleDescription()
+        public async Task<IActionResult> ArticleDescription([FromRoute] Guid id)
         {
-            return View();
+            var blog = await model.GetBlogById(id);
+            return View(blog);
         }
 
         [HttpGet]
@@ -42,7 +43,7 @@ namespace CRMSystem.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Update(Guid id)
+        public async Task<IActionResult> Update([FromRoute] Guid id)
         {
             var blog = await model.GetBlogById(id);
             return View(blog);

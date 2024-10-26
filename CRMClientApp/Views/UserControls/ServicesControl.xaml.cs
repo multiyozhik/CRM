@@ -20,7 +20,7 @@ namespace CRMClientApp.Views.UserControls
             if (serviceFormWindowResult == true)
             {
                 var crmViewModel = (CRMViewModel)((Button)sender).DataContext;
-                await crmViewModel.CrmClient.AddService(newService);
+                newService.Id = await crmViewModel.CrmClient.AddService(newService);
                 crmViewModel.ServicesList.Add(newService);
             }
         }
@@ -39,9 +39,11 @@ namespace CRMClientApp.Views.UserControls
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
+            var button = (Button)sender;
+            var deletedService = (Service)button.DataContext;
             var crmViewModel = (CRMViewModel)DataContext;
-            var deletedService = (Service)((Button)sender).DataContext;
-            crmViewModel.CrmClient.DeleteService(deletedService);
+            crmViewModel.CrmClient.DeleteService(deletedService.Id);
+            crmViewModel.ServicesList.Remove(deletedService);
         }
     }
 }

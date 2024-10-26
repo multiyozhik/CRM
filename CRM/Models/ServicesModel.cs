@@ -17,28 +17,26 @@ namespace CRMSystem.Models
         public async Task<Service?> GetServiceById(Guid id)
             => await context.Services.FirstOrDefaultAsync(service => service.Id == id);
 
-        public async Task Add([FromForm] string name, string descriptor)
+        public async Task<Guid> Add(string name, string descriptor)
         {
-            await context.Services.AddAsync(new Service(Guid.NewGuid(), name, descriptor));
+            var serviceId = Guid.NewGuid();
+            await context.Services.AddAsync(new Service(serviceId, name, descriptor));
             context.SaveChanges();
+            return serviceId;
         }
 
         public async Task Update(Service service)
         {
-            var updatingService = await GetServiceById(service.Id);
-            updatingService = updatingService with
-            {
-                Name = service.Name,
-                Description = service.Description
-            };
-            context.Update(updatingService);
+            var count = await context.Services.Where(s => s.Id == service.Id).ExecuteUpdateAsync(
+                setters => setters
+                    .SetProperty(s => s.Name, service.Name)
+                    .SetProperty(s => s.Description, service.Description));
             await context.SaveChangesAsync();
         }
 
         public async Task Delete(Guid id)
         {
-            var service = await GetServiceById(id);
-            if (service is not null) context.Services.Remove(service);
+            var count = await context.Services.Where(s => s.Id == id).ExecuteDeleteAsync();
             await context.SaveChangesAsync();
         }
     }

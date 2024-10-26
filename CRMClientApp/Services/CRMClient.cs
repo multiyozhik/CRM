@@ -24,10 +24,10 @@ namespace CRMClientApp.Services
         }
 
 
-        //формирование адреса картинки для клиента
+        //метод для формирования Url-адреса картинки для клиента
 
-        public string GetPhotoUrl(string photoName)
-            => string.Concat(baseAddress.ToString(), "img/", photoName);
+        public string GetUrlFileName(string fileName)
+            => string.Concat(baseAddress.ToString(), "img/", fileName);
 
         public async Task<FieldValuesViewModel?> GetFieldValues()
         {
@@ -35,7 +35,28 @@ namespace CRMClientApp.Services
                 new Uri(baseAddress, "api/ApiGeneralInfo/GetFieldValues"));
         }
 
+        //загрузка файла на сервер и удаление файла на сервере
+
+        public async Task<string> UploadFile(string filePath, string mediaType)
+        {
+            using var multipartFormContent = new MultipartFormDataContent();
+            var fileStreamContent = new StreamContent(File.OpenRead(filePath));
+
+            fileStreamContent.Headers.ContentType = new MediaTypeHeaderValue(mediaType);   //image/png, image/svg+xml
+            multipartFormContent.Add(fileStreamContent, "file", Path.GetFileName(filePath));
+            var httpResponse = await httpClient
+                .PostAsync(new Uri(baseAddress, "api/ApiGeneralInfo/UploadFile"), multipartFormContent);
+            return await httpResponse.Content.ReadAsStringAsync();
+        }
+
+        public async Task DeleteFile(string fileName)
+        {
+            await httpClient.DeleteAsync(
+                new Uri(baseAddress, $"api/ApiGeneralInfo/DeleteFile/{fileName}"));
+        }
+
         //контакты
+
         public async Task<ContactsValuesViewModel?> GetContactsValues()
         {
             var contactsVM = await httpClient.GetFromJsonAsync<ContactsValuesViewModel>(
@@ -62,10 +83,7 @@ namespace CRMClientApp.Services
         {
             await httpClient.PostAsync(
                 new Uri(baseAddress, "api/ApiContacts/SaveNewLink"), 
-                new StringContent(
-                    JsonSerializer.Serialize(newLink),
-                    Encoding.UTF8,
-                    "application/json"));
+                JsonContent.Create(newLink));
         }
 
         public async Task DeleteLink(string iconPath)
@@ -97,6 +115,16 @@ namespace CRMClientApp.Services
                     "application/json"));
         }
 
+        //рабочий стол
+
+        public async Task<List<Order>?> GetOrdersList()
+        {
+            var response = await httpClient.GetAsync(new Uri(baseAddress, "api/ApiHome/GetOrders"));
+            return await response.Content.ReadFromJsonAsync<List<Order>>();
+        }
+
+
+
         //проекты
 
         public async Task<List<Project>?> GetProjectsList()
@@ -104,42 +132,32 @@ namespace CRMClientApp.Services
             var httpResponse = await httpClient
                 .GetAsync(new Uri(baseAddress, "api/ApiProjects/GetProjects"));
             var projectsList = await httpResponse.Content.ReadFromJsonAsync<List<Project>>();
-            projectsList = projectsList?.Select(project => {
-                project.Photo = GetPhotoUrl(project.Photo);
+            return projectsList?.Select(project => {
+                project.Photo = GetUrlFileName(project.Photo);
                 return project; 
             }).ToList();
-            return projectsList;
         }
-
-        public async Task<string> UploadFile(string filePath)
+           
+        public async Task<Guid> AddProject(Project project)
         {
-            using var multipartFormContent = new MultipartFormDataContent();
-            var fileStreamContent = new StreamContent(File.OpenRead(filePath));
-
-            fileStreamContent.Headers.ContentType = new MediaTypeHeaderValue("image/png");
-            multipartFormContent.Add(fileStreamContent, "file", Path.GetFileName(filePath));
-            var httpResponse = await httpClient
-                .PostAsync(new Uri(baseAddress, "api/ApiGeneralInfo/UploadFile"), multipartFormContent);
-            return await httpResponse.Content.ReadAsStringAsync();
-        }
-    
-        public async Task AddProject(Project project)
-        {
-            var content = JsonContent.Create(project);
-            await httpClient.PostAsync(
-                new Uri(baseAddress, "api/ApiProjects/Add"), content);
+            var response = await httpClient.PostAsync(
+                new Uri(baseAddress, "api/ApiProjects/Add"), 
+                JsonContent.Create(project));
+            var projectId = await response.Content.ReadFromJsonAsync<Guid>();
+            return projectId;
         }
 
         public async Task EditProject(Project project)
         {
-            var content = JsonContent.Create(project);
-            await httpClient.PutAsync(new Uri(baseAddress, "api/ApiProjects/Update"), content);
+            await httpClient.PutAsync(
+                new Uri(baseAddress, "api/ApiProjects/Update"), 
+                JsonContent.Create(project));
         }
 
-        public async Task DeleteProject(Project project)
+        public async Task DeleteProject(Guid id)
         {
-            var content = JsonContent.Create(project);
-            await httpClient.PostAsync(new Uri(baseAddress, "api/ApiProjects/Delete"), content);
+            await httpClient.DeleteAsync(
+                new Uri(baseAddress, $"api/ApiProjects/Delete/{id}"));
         }
 
         //услуги
@@ -148,28 +166,29 @@ namespace CRMClientApp.Services
         {
             var httpResponse = await httpClient
                 .GetAsync(new Uri(baseAddress, "api/ApiServices/GetServices"));
-            var servicesList = await httpResponse.Content.ReadFromJsonAsync<List<Service>>();
-            return servicesList;
+            return await httpResponse.Content.ReadFromJsonAsync<List<Service>>();
         }
 
-        public async Task AddService(Service service)
+        public async Task<Guid> AddService(Service service)
         {
-            await httpClient.PostAsync(
-                new Uri(baseAddress, "api/ApiServices/Add"),
-                new StringContent(JsonSerializer.Serialize(service), Encoding.UTF8, "application/json"));
+            var response = await httpClient.PostAsync(
+                new Uri(baseAddress, "api/ApiServices/Add"), 
+                JsonContent.Create(service));
+            var serviceId = await response.Content.ReadFromJsonAsync<Guid>();
+            return serviceId;
         }
 
         public async Task EditService(Service service)
         {
             await httpClient.PutAsync(
                 new Uri(baseAddress, "api/ApiServices/Update"),
-                new StringContent(JsonSerializer.Serialize(service), Encoding.UTF8, "application/json"));
+                JsonContent.Create(service));
         }
 
-        public async Task DeleteService(Service service)
+        public async Task DeleteService(Guid id)
         {
-            await httpClient.PostAsync(new Uri(baseAddress, "api/ApiServices/Delete"),
-                new StringContent(service.Id.ToString()));
+            await httpClient.DeleteAsync(
+                new Uri(baseAddress, $"api/ApiServices/Delete/{id}"));
         }
 
 
@@ -181,30 +200,34 @@ namespace CRMClientApp.Services
                 .GetAsync(new Uri(baseAddress, "api/ApiBlogs/GetBlogs"));
             var blogsList = await httpResponse.Content.ReadFromJsonAsync<List<Blog>>();
             blogsList = blogsList?.Select(
-                blog => { blog.Photo = string.Concat(baseAddress, "img/", blog.Photo);
+                blog => { 
+                    blog.Photo = string.Concat(baseAddress, "img/", blog.Photo);
+                    blog.CreateAt = new DateTime(blog.CreateAt.Year, blog.CreateAt.Month, blog.CreateAt.Day);
                     return blog;
                 }).ToList();
             return blogsList;
         }
 
-        public async Task AddBlog(Blog blog)
+        public async Task<Guid> AddBlog(Blog blog)
         {
-            await httpClient.PostAsync(
+            var response = await httpClient.PostAsync(
                 new Uri(baseAddress, "api/ApiBlogs/Add"),
-                new StringContent(JsonSerializer.Serialize(blog), Encoding.UTF8, "application/json"));
+                JsonContent.Create(blog));
+            var blogId = await response.Content.ReadFromJsonAsync<Guid>();
+            return blogId;
         }
 
         public async Task EditBlog(Blog blog)
         {
             await httpClient.PutAsync(
                 new Uri(baseAddress, "api/ApiBlogs/Update"),
-                new StringContent(JsonSerializer.Serialize(blog), Encoding.UTF8, "application/json"));
+                JsonContent.Create(blog));
         }
 
-        public async Task DeleteBlog(Blog blog)
+        public async Task DeleteBlog(Guid id)
         {
-            await httpClient.PostAsync(new Uri(baseAddress, "api/ApiBlogs/Delete"),
-                new StringContent(blog.Id.ToString()));
+            await httpClient.DeleteAsync(
+                new Uri(baseAddress, $"api/ApiBlogs/Delete/{id}"));
         }
 
 
@@ -214,10 +237,7 @@ namespace CRMClientApp.Services
         {
             var httpResponse = await httpClient.PostAsync(
                 new Uri(baseAddress, "api/ApiAccount/LogIn"),
-                new StringContent(
-                    JsonSerializer.Serialize(loginVM),
-                    Encoding.UTF8,
-                    "application/json"));
+                JsonContent.Create(loginVM));
             return httpResponse.IsSuccessStatusCode;
         }
 

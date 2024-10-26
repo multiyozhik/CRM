@@ -26,21 +26,21 @@
                         </Expander.Header>
                         <Expander.Content>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Path=Description}" 
+                                <TextBlock Text="{Binding Path=Description, Mode=TwoWay, 
+                                        UpdateSourceTrigger=PropertyChanged}" 
                                        ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-                                <WrapPanel Orientation="Horizontal">
+                                <WrapPanel Orientation="Horizontal" 
+                                           Visibility="{Binding DataContext.CollapsedInitialVisibility, 
+                                             RelativeSource={RelativeSource AncestorType=Window}}">
                                     <Button x:Name="EditButton" Style="{x:Null}" 
-                                    Click="EditButton_Click">
+                                            Click="EditButton_Click">
                                         <Image Source="/Resourses/img/icon-edit-btn.png" 
-                                           Width="20" Height="20" 
-                                           Visibility="{Binding CollapsedInitialVisibility, 
-                                            Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                           Width="20" Height="20"/>
                                     </Button>
-                                    <Button x:Name="DeleteButton" Style="{x:Null}" Click="DeleteButton_Click">
+                                    <Button x:Name="DeleteButton" Style="{x:Null}" 
+                                            Click="DeleteButton_Click">
                                         <Image Source="/Resourses/img/icon-delete-btn.png"  
-                                           Width="20" Height="20" 
-                                           Visibility="{Binding CollapsedInitialVisibility,  
-                                            Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                           Width="20" Height="20" />
                                     </Button>
                                 </WrapPanel>
                             </StackPanel>

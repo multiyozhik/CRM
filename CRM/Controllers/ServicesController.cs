@@ -34,7 +34,7 @@ namespace CRMSystem.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Update(Guid id)
+        public async Task<IActionResult> Update([FromRoute] Guid id)
         {
             var service = await model.GetServiceById(id);
             return View(service);

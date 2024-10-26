@@ -22,8 +22,11 @@ namespace CRMSystem.Api
             => await model.GetServicesList();
 
         [HttpPost]
-        public async Task Add([FromBody] ServiceDataFromRequest serviceData)
-        => await model.Add(serviceData.Name, serviceData.Description);
+        public async Task<Guid> Add([FromBody] ServiceDataFromRequest serviceData)
+        {
+            var id = await model.Add(serviceData.Name, serviceData.Description);
+            return id;
+        }
 
         [HttpGet("{id}")]
         public async Task<Service?> GetServiceById([FromRoute] Guid id)
@@ -33,7 +36,7 @@ namespace CRMSystem.Api
         public async Task Update([FromBody] Service service)
         => await model.Update(service);
 
-        [HttpPost("{id}")]
+        [HttpDelete("{id}")]
         public async Task Delete([FromRoute] Guid id)
         => await model.Delete(id);
     }

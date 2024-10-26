@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="CRMClientApp.Views.UserControls.DesktopControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CRMClientApp.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=local:CRMViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1000">
+    <Grid Margin="50">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>            
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="{Binding OrdersListCount, StringFormat=Всего {0} заявки}"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button x:Name="TodayButton" Content="Сегодня"/>
+            <Button x:Name="YesterdayButton" Content="Вчера"/>
+            <Button x:Name="WeekButton" Content="Неделя"/>
+            <Button x:Name="MonthButton" Content="Месяц"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="StartTextBox" Text=""/>
+                <TextBlock Text="-"/>
+                <TextBox x:Name="EndTextBox" Text=""/>
+            </StackPanel>
+        </StackPanel>
+        <TextBlock Grid.Row="2" Text="{Binding OrdersListCount, 
+            StringFormat=За указанный период поступило {0} заявок}"/>
+        <ListView Grid.Row="3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  ItemsSource="{Binding Path=OrdersList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ListView.View>
+                <GridView ColumnHeaderContainerStyle="{x:Null}">
+                    <GridViewColumn Header="Номер заявки" Width="100"
+                                    DisplayMemberBinding="{Binding Path=Id}"/>
+                    <GridViewColumn Header="Время заявки" Width="100" 
+                                    DisplayMemberBinding="{Binding Path=TimeStamp}"/>
+                    <GridViewColumn Header="Имя" Width="100"
+                                    DisplayMemberBinding="{Binding Path=Name}"/>
+                    <GridViewColumn Header="Текст заявки" Width="200"
+                                    DisplayMemberBinding="{Binding Path=Text}"/>
+                    <GridViewColumn Header="Контакты" Width="100"
+                                    DisplayMemberBinding="{Binding Path=Email}"/>
+                    <GridViewColumn Header="Статус" Width="100"
+                                    DisplayMemberBinding="{Binding Path=Status}"/>
+                    <GridViewColumn Header="Изменить статус" Width="150">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ListBox x:Name="ChangeStatusListBox"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>    
+</UserControl>

@@ -22,9 +22,17 @@ namespace CRMSystem.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> GetProjectById(Guid id)
+        public async Task<IActionResult> GetProjectById([FromRoute] Guid id)
         {
             return View(await model.GetProjectById(id));
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> ProjectDescription([FromRoute] Guid id)
+        {
+            var project = await model.GetProjectById(id);
+            return View(project);
         }
 
         [HttpGet]
@@ -41,13 +49,13 @@ namespace CRMSystem.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Update(Guid id)
+        public async Task<IActionResult> Update([FromRoute] Guid id)
         {
             var project = await model.GetProjectById(id);
             return View(project);
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Update([FromForm] Project project)
         {
             await model.Update(project);
@@ -56,9 +64,9 @@ namespace CRMSystem.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Delete([FromRoute] Project project)
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            await model.Delete(project);
+            await model.Delete(id);
             return RedirectToAction("Index");
         }
     }

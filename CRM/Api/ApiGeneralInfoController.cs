@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Extensions;
 using System.IO;
 using System.IO.Pipes;
 using System.Net.Http;
@@ -35,7 +36,8 @@ namespace CRMSystem.Api
             return  await JsonSerializer.DeserializeAsync<Dictionary<string, string>>(linksStream);
         }
 
-        [HttpPost]        
+        [Authorize]
+        [HttpPost]
         public async Task<string> UploadFile([FromForm] IFormFile file) 
         {
             var uploadPath = $"{Directory.GetCurrentDirectory()}/wwwroot/img/";
@@ -45,6 +47,15 @@ namespace CRMSystem.Api
             using var fileStream = new FileStream(fullPath, FileMode.Create);
             await file.CopyToAsync(fileStream);
             return Path.GetFileName(fullPath);
+        }
+
+        [Authorize]
+        [HttpDelete("{pathName}")]
+        public async Task DeleteFile([FromRoute] string pathName)     
+        {
+            var directoryPath = $"{Directory.GetCurrentDirectory()}/wwwroot/img/";
+            var filePath = string.Concat(directoryPath, Path.GetFileName(pathName));
+            System.IO.File.Delete(filePath);                         //асинхронного Delete метода нет
         }
     }
 }

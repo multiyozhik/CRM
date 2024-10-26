@@ -30,7 +30,8 @@
                         </Button>
                         <TextBlock Text="{Binding Path=Name}"/>
                         <WrapPanel Orientation="Horizontal" 
-                                   Visibility="{Binding DataContext.CollapsedInitialVisibility, RelativeSource={RelativeSource AncestorType=Window}}">
+                                   Visibility="{Binding DataContext.CollapsedInitialVisibility, 
+                                        RelativeSource={RelativeSource AncestorType=Window}}">
                             <Button x:Name="EditButton" Style="{x:Null}" 
                                     Click="EditButton_Click">
                                 <Image Source="/Resourses/img/icon-edit-btn.png" 

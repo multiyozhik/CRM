@@ -4,6 +4,7 @@
 @{
     using var fs = new FileStream("./wwwroot/files/default.json", FileMode.Open);
     var FieldValuesVM = JsonSerializer.Deserialize<FieldValuesViewModel>(fs);
+    var isInRole = User.IsInRole("admin");
 }
 
 <!DOCTYPE html>
@@ -21,9 +22,18 @@
         <div class="header">
         <nav>
             <ul class="nav">
-                <li><a href="/Admin/Index">Список пользователей</a></li>
-                <li><a href="/Account/LogIn">Войти</a></li>
-                <li><a href="/Account/LogOut">Выйти</a></li>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li><a href="/Admin/Index">Список пользователей</a></li>
+                    }
+                    @if (!User.IsInRole("admin"))
+                    {
+                        <li><a href="/Account/LogIn">Войти</a></li>
+                    }
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li><a href="/Account/LogOut">Выйти</a></li>
+                    }
             </ul>
         </nav>
         @if(!User.IsInRole("admin"))

@@ -18,16 +18,16 @@
         {
             <div class="card-container">
                 <article class="project-card">
-                    <img class="project-img" src="../img/@project.Photo" alt="project card" />
-                    <a class="project-title" href="ProjectDescription" target="_self">
-                        <p>@project.Name</p>
+                    <a href="/Projects/ProjectDescription/@project.Id" target="_self">
+                        <img class="project-img" src="../img/@project.Photo" alt="project card" />
                     </a>
+                    <p class="project-title">@project.Name</p>
                 </article>
                 @if (isInRole)
                 {
                     <div>
-                        <form class="icons-block" method="post" asp-controller="Projects" asp-action="Delete" asp-route-id="@project.Id">
-                            <a class="icon-btn" href="/Projects/Update/@project.Id">
+                        <form class="icons-block" method="post" asp-controller="Projects" asp-action="Delete"  asp-route-id="@project.Id">
+                            <a class="icon-btn" href="/Projects/Update/project.Id">                               
                                 <img src="~/img/icon-edit-btn.png" alt="edit button"/>
                             </a>
                             <input class="icon-btn delete-icon-btn" type="image" alt="delete button"
