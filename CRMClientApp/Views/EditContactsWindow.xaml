@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CRMClientApp.ViewModels"
         mc:Ignorable="d" 
+        xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
         d:DataContext="{d:DesignInstance Type=local:CRMViewModel}" 
         d:DesignHeight="450" d:DesignWidth="800" 
         Title="Добавить/редактировать ссылки" Height="450" Width="800">
@@ -13,13 +14,11 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ListView Grid.Row="0" ItemsSource="{Binding Path=SocialMediaLinksList, 
-            Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <ListView Grid.Row="0" ItemsSource="{Binding Path=SocialMediaLinksList}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{Binding Path=Icon, Mode=OneWayToSource, 
-                            UpdateSourceTrigger=PropertyChanged}" Width="20" Height="20"/>
+                        <svgc:SvgViewbox Source="{Binding Path=Icon}" Width="20" Height="20"/>
                         <TextBox Text="{Binding Path=HyperlinkUri, Mode=TwoWay, 
                             UpdateSourceTrigger=PropertyChanged}" Width="300"/>
                         <Button x:Name="DeleteLinkButton" Click="DeleteLinkButton_Click">

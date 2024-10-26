@@ -32,10 +32,9 @@ namespace CRMClientApp.Views
             {
                 newLink = (SocialMediaLinkVM)linkFormWindow.DataContext;
                 var crmViewModel = (CRMViewModel)DataContext;
-                var serverIconPath = await crmViewModel.CrmClient.UploadFile(
-                    System.IO.Path.GetFileName(newLink.Icon), 
-                    "image/svg+xml"); 
-                newLink.Icon = System.IO.Path.GetFileName(serverIconPath);   
+                newLink.Icon = System.IO.Path.GetFileName(newLink.Icon);
+                var serverIconPath = await crmViewModel.CrmClient.UploadFile(newLink.Icon, "image/svg+xml");
+                newLink.Icon = System.IO.Path.GetFileName(serverIconPath);
                 await crmViewModel.CrmClient.AddLink(newLink);
                 newLink.Icon = crmViewModel.CrmClient.GetUrlFileName(newLink.Icon);
                 crmViewModel.SocialMediaLinksList.Add(newLink);
@@ -50,6 +49,7 @@ namespace CRMClientApp.Views
         {
             var button = (Button)sender;
             var link = (SocialMediaLinkVM)button.DataContext;
+            link.Icon = System.IO.Path.GetFileName(link.Icon);
             var crmViewModel = (CRMViewModel)DataContext;
             await crmViewModel.CrmClient.DeleteLink(link.Icon);
             await crmViewModel.CrmClient.DeleteFile(link.Icon);

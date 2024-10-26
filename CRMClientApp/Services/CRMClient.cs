@@ -51,7 +51,7 @@ namespace CRMClientApp.Services
 
         public async Task DeleteFile(string fileName)
         {
-            await httpClient.DeleteAsync(
+            var response = await httpClient.DeleteAsync(
                 new Uri(baseAddress, $"api/ApiGeneralInfo/DeleteFile/{fileName}"));
         }
 
@@ -81,17 +81,17 @@ namespace CRMClientApp.Services
 
         public async Task AddLink(SocialMediaLinkVM newLink)
         {
-            await httpClient.PostAsync(
+            var response = await httpClient.PostAsync(
                 new Uri(baseAddress, "api/ApiContacts/SaveNewLink"), 
                 JsonContent.Create(newLink));
         }
 
-        public async Task DeleteLink(string iconPath)
+        public async Task DeleteLink(string iconFileName)
         {
-            await httpClient.PostAsync(
-                new Uri(baseAddress, "api/ApiContacts/Delete"),
-                new StringContent(iconPath));
+            var response = await httpClient.DeleteAsync(
+                new Uri(baseAddress, $"api/ApiContacts/Delete/{iconFileName}"));
         }
+
 
         //заявки
 

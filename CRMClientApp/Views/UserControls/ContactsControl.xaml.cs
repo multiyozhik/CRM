@@ -25,8 +25,7 @@ namespace CRMClientApp.Views.UserControls
 
         private void EditContactsButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var editButton = (Button)sender;
-            var crmViewModel = (CRMViewModel)editButton.DataContext;
+            var crmViewModel = (CRMViewModel)DataContext;
             var editContactsWindow = new EditContactsWindow()
             {
                 DataContext = crmViewModel

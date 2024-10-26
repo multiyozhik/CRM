@@ -50,11 +50,11 @@ namespace CRMSystem.Api
         }
 
         [Authorize]
-        [HttpDelete("{pathName}")]
-        public async Task DeleteFile([FromRoute] string pathName)     
-        {
+        [HttpDelete("{fileName}")]
+        public async Task DeleteFile([FromRoute] string fileName)     
+        {            
             var directoryPath = $"{Directory.GetCurrentDirectory()}/wwwroot/img/";
-            var filePath = string.Concat(directoryPath, Path.GetFileName(pathName));
+            var filePath = Path.Combine(directoryPath, Path.GetFileName(fileName));
             System.IO.File.Delete(filePath);                         //асинхронного Delete метода нет
         }
     }
