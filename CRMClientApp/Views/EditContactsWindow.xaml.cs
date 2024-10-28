@@ -32,15 +32,14 @@ namespace CRMClientApp.Views
             {
                 newLink = (SocialMediaLinkVM)linkFormWindow.DataContext;
                 var crmViewModel = (CRMViewModel)DataContext;
-                newLink.Icon = System.IO.Path.GetFileName(newLink.Icon);
                 var serverIconPath = await crmViewModel.CrmClient.UploadFile(newLink.Icon, "image/svg+xml");
                 newLink.Icon = System.IO.Path.GetFileName(serverIconPath);
                 await crmViewModel.CrmClient.AddLink(newLink);
                 newLink.Icon = crmViewModel.CrmClient.GetUrlFileName(newLink.Icon);
                 crmViewModel.SocialMediaLinksList.Add(newLink);
 
-                //т.е. из datacontext получаем путь к файлу иконки в клиенте, отсекаем само имя файла,
-                //загружаем файл иконки на сервер и возвр. сформир. путь к иконке на сервере,
+                //т.е. из datacontext получаем путь к файлу иконки в клиенте, 
+                //загружаем по этому клиентскому пути файл иконки на сервер и возвр. сформир. путь к иконке на сервере,
                 //отсекаем только само серверное имя файла иконки и добавляем эту соц.ссылку в БД, 
                 //для отображения добавления - формируем Url-адрес к файлу иконки и добавляем соц.ссылку в observable-коллекцию
             }

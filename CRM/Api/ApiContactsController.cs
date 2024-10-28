@@ -22,7 +22,7 @@ namespace CRMSystem.Api
         }
 
         [HttpPost]
-        public async Task SaveNewLink([FromBody] SocialMediaLinkDataFromRequest link)
+        public async Task SaveNewLink([FromBody] SocialMediaLinkVM link)
         {
             var linksDict = await Deserialize("/files/social-media-links.json");
             linksDict?.Add($"/img/{link.IconPath}", link.HyperlinkUri);
@@ -48,5 +48,5 @@ namespace CRMSystem.Api
         }
     }
 
-    public record SocialMediaLinkDataFromRequest(string IconPath, string HyperlinkUri);
+    public record SocialMediaLinkVM(string IconPath, string HyperlinkUri);
 }
