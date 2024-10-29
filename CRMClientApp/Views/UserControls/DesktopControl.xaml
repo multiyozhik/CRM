@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:CRMClientApp.ViewModels" 
              d:DataContext="{d:DesignInstance Type=local:CRMViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="1000">
+             d:DesignHeight="600" d:DesignWidth="1100">
     <Grid Margin="50">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,23 +14,32 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>            
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="{Binding OrdersListCount, StringFormat=Всего {0} заявки}"/>
+        <TextBlock Grid.Row="0" Text="{Binding Path=TotalOrdersCount,              
+            StringFormat=Всего {0} заявки}"/>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Button x:Name="TodayButton" Content="Сегодня"/>
-            <Button x:Name="YesterdayButton" Content="Вчера"/>
-            <Button x:Name="WeekButton" Content="Неделя"/>
-            <Button x:Name="MonthButton" Content="Месяц"/>
+            <Button x:Name="TodayButton" Content="Сегодня" Click="TodayButton_Click"/>
+            <Button x:Name="YesterdayButton" Content="Вчера" Click="YesterdayButton_Click"/>
+            <Button x:Name="WeekButton" Content="Неделя" Click="WeekButton_Click"/>
+            <Button x:Name="MonthButton" Content="Месяц" Click="MonthButton_Click"/>
             <StackPanel Orientation="Horizontal">
-                <TextBox x:Name="StartTextBox" Text=""/>
-                <TextBlock Text="-"/>
-                <TextBox x:Name="EndTextBox" Text=""/>
+                <TextBlock Text="Период с "/>
+                <DatePicker Width="100" HorizontalAlignment="Left" 
+                    VerticalAlignment="Top" Text="Select start date" 
+                    SelectedDate="{Binding DateStart}"/>
+                <TextBlock Text=" по "/>
+                <DatePicker Width="100" HorizontalAlignment="Left" 
+                    VerticalAlignment="Top" Text="Select end date" 
+                    SelectedDate="{Binding Path=DateEnd}"/>
+                <Button x:Name="FilterButton" Content="Показать" Margin="5"
+                        Click="FilterButton_Click"/>
             </StackPanel>
         </StackPanel>
-        <TextBlock Grid.Row="2" Text="{Binding OrdersListCount, 
+        <TextBlock Grid.Row="2" Text="{Binding OrdersList.Count, 
             StringFormat=За указанный период поступило {0} заявок}"/>
-        <ListView Grid.Row="3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+        <ListView Grid.Row="3" 
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  ItemsSource="{Binding Path=OrdersList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                  ItemsSource="{Binding Path=OrdersList, UpdateSourceTrigger=PropertyChanged}">
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{x:Null}">
                     <GridViewColumn Header="Номер заявки" Width="100"
@@ -48,7 +57,9 @@
                     <GridViewColumn Header="Изменить статус" Width="150">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <ListBox x:Name="ChangeStatusListBox"/>
+                                <ComboBox x:Name="ChangeStatusComboBox" 
+                                         ItemsSource="{Binding OrderStatus}"
+                                         SelectedItem="{Binding SelectedOrderStatus}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

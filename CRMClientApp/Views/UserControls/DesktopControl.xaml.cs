@@ -1,5 +1,8 @@
-﻿using System;
+﻿using CRMClientApp.Models;
+using CRMClientApp.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +26,43 @@ namespace CRMClientApp.Views.UserControls
         public DesktopControl()
         {
             InitializeComponent();
+        }
+
+        private async void TodayButton_Click(object sender, RoutedEventArgs e)
+        {
+            var crmViewModel = (CRMViewModel)DataContext;
+            var filteredOrdersList = await crmViewModel.CrmClient.FilterOrdersByPeriod("today");
+            crmViewModel.OrdersList = new ObservableCollection<Order>(filteredOrdersList);
+        }
+
+        private async void YesterdayButton_Click(object sender, RoutedEventArgs e)
+        {
+            var crmViewModel = (CRMViewModel)DataContext;
+            var filteredOrdersList = await crmViewModel.CrmClient.FilterOrdersByPeriod("yesterday");
+            crmViewModel.OrdersList = new ObservableCollection<Order>(filteredOrdersList);
+        }
+
+        private async void WeekButton_Click(object sender, RoutedEventArgs e)
+        {
+            var crmViewModel = (CRMViewModel)DataContext;
+            var filteredOrdersList = await crmViewModel.CrmClient.FilterOrdersByPeriod("week");
+            crmViewModel.OrdersList = new ObservableCollection<Order>(filteredOrdersList);
+        }
+
+        private async void MonthButton_Click(object sender, RoutedEventArgs e)
+        {
+            var crmViewModel = (CRMViewModel)DataContext;
+            var filteredOrdersList = await crmViewModel.CrmClient.FilterOrdersByPeriod("month");
+            crmViewModel.OrdersList = new ObservableCollection<Order>(filteredOrdersList);
+        }
+
+        private async void FilterButton_Click(object sender, RoutedEventArgs e)
+        {
+            var crmViewModel = (CRMViewModel)DataContext;
+            var dateStart = (DateTime)crmViewModel.DateStart;
+            var dateEnd = (DateTime)crmViewModel.DateEnd;
+            var filteredOrdersList = await crmViewModel.CrmClient.FilterOrdersByDateRange(dateStart, dateEnd);
+            crmViewModel.OrdersList = new ObservableCollection<Order>(filteredOrdersList);
         }
     }
 }

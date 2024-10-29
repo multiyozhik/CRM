@@ -1,11 +1,15 @@
-﻿using System.Windows;
+﻿using System.Configuration;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Markup;
 
 namespace CRMClientApp
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        //public App()
+        //{
+
+        //}
     }
 }

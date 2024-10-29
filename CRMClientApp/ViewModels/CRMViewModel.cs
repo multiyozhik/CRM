@@ -2,9 +2,12 @@
 using CRMClientApp.Models;
 using CRMClientApp.Services;
 using CRMClientApp.Views;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace CRMClientApp.ViewModels
@@ -14,7 +17,9 @@ namespace CRMClientApp.ViewModels
         public CRMClient CrmClient { get; }
         public CRMViewModel(CRMClient crmClient)
         {
-            this.CrmClient = crmClient;
+            CrmClient = crmClient;
+            DateStart = DateTime.Now;   
+            DateEnd = DateTime.Now;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -156,7 +161,11 @@ namespace CRMClientApp.ViewModels
         public AsyncRelayCommand? AddOrderCommand
         {
             get => addOrderCommand ??= new AsyncRelayCommand(
-                async obj => await CrmClient.AddOrder(AddingOrder));
+                async obj =>
+                {
+                await CrmClient.AddOrder(AddingOrder);
+                TotalOrdersCount += 1;
+                });
         }
 
         private readonly AsyncRelayCommand editOrderControlCommand;
@@ -204,14 +213,42 @@ namespace CRMClientApp.ViewModels
             set
             {
                 ordersList = value;
-                OrdersListCount = (ordersList is null)? 0: ordersList.Count;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OrdersList)));
             }
         }
 
-        public int OrdersListCount { get;  private set; }
+        private int totalOrdersCount;
+        public int TotalOrdersCount
+        {
+            get => totalOrdersCount;
+            set
+            {
+                totalOrdersCount = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalOrdersCount)));
+            }
+        }
 
+        private DateTime dateStart;
+        public DateTime DateStart
+        {
+            get => dateStart;
+            set
+            {
+                dateStart = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DateStart)));
+            }
+        }
 
+        private DateTime dateEnd;
+        public DateTime DateEnd
+        {
+            get => dateEnd;
+            set
+            {
+                dateEnd = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DateEnd)));
+            }
+        }
 
         //проекты
 

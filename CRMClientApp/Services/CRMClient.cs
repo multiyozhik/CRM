@@ -115,6 +115,14 @@ namespace CRMClientApp.Services
                     "application/json"));
         }
 
+        public async Task<List<Order>?> FilterOrdersByPeriod(string period)
+        {
+            var response = await httpClient.GetAsync(
+                new Uri(baseAddress, $"api/ApiHome/FilterByPeriod/{period}"));
+            var ordersList = await response.Content.ReadFromJsonAsync<List<Order>>();
+            return ordersList;
+        }
+
         //рабочий стол
 
         public async Task<List<Order>?> GetOrdersList()
@@ -123,7 +131,21 @@ namespace CRMClientApp.Services
             return await response.Content.ReadFromJsonAsync<List<Order>>();
         }
 
+        public async Task<int> GetTotalOrdersList()
+        {
+            var ordersList = await GetOrdersList();
+            return ordersList?.Count ?? 0;
+        }
 
+        public async Task<List<Order>> FilterOrdersByDateRange(DateTime dateStart, DateTime dateEnd)
+        {
+            var response = await httpClient.PostAsync(new Uri(baseAddress, "api/ApiHome/FilterByDateRange"), 
+                JsonContent.Create(new { DateStart = dateStart, DateEnd = dateEnd}));
+            var ordersList = await response.Content.ReadFromJsonAsync<List<Order>>();
+            return ordersList;
+        }
+
+        //public record DateRangeFromRequest(DateTime DateStart, DateTime DateEnd);
 
         //проекты
 
