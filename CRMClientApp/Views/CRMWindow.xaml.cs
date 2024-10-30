@@ -30,9 +30,12 @@ namespace CRMClientApp.Views
 
             crmViewModel.ContactsValues = await crmClient.GetContactsValues()?? new ContactsValuesViewModel();
             crmViewModel.FieldValues = await crmClient.GetFieldValues();
-            crmViewModel.TotalOrdersCount = await crmClient.GetTotalOrdersList();
-            crmViewModel.OrdersList = new ObservableCollection<Order>(
-                await crmClient.GetOrdersList()?? new List<Order>());
+            crmViewModel.TotalOrdersCount = await crmClient.GetTotalOrdersListCount();
+            var ordersList = await crmClient.GetOrdersList() ?? new List<OrderVM>(); 
+            foreach (var order in ordersList)
+            {
+                crmViewModel.OrdersList.Add(order);
+            }  
             crmViewModel.SocialMediaLinksList = new ObservableCollection<SocialMediaLinkVM>(
                 await crmClient.GetSocialMediaLinks());
             crmViewModel.ProjectsList = new ObservableCollection<Project>(

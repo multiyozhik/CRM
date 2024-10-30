@@ -6,7 +6,10 @@
              xmlns:local="clr-namespace:CRMClientApp.ViewModels" 
              d:DataContext="{d:DesignInstance Type=local:CRMViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="1100">
+             d:DesignHeight="600" d:DesignWidth="1200">
+    <UserControl.Resources>
+        <local:OrderStatusConverter x:Key="OrderStatusConverter"/>
+    </UserControl.Resources>
     <Grid Margin="50">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -52,14 +55,15 @@
                                     DisplayMemberBinding="{Binding Path=Text}"/>
                     <GridViewColumn Header="Контакты" Width="100"
                                     DisplayMemberBinding="{Binding Path=Email}"/>
-                    <GridViewColumn Header="Статус" Width="100"
-                                    DisplayMemberBinding="{Binding Path=Status}"/>
-                    <GridViewColumn Header="Изменить статус" Width="150">
+                    <GridViewColumn Header="Статус" Width="150">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox x:Name="ChangeStatusComboBox" 
-                                         ItemsSource="{Binding OrderStatus}"
-                                         SelectedItem="{Binding SelectedOrderStatus}"/>
+                                <ComboBox x:Name="ChangeStatusComboBox"
+                                         ItemsSource="{Binding DataContext.OrderStatusList,  
+                                            RelativeSource={RelativeSource AncestorType=Window}}"   
+                                         
+                                         SelectedItem="{Binding Status, Converter={StaticResource OrderStatusConverter}}" 
+                                          />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

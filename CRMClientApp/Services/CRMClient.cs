@@ -10,6 +10,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CRMClientApp.Services
 {
@@ -98,54 +99,52 @@ namespace CRMClientApp.Services
         public async Task AddOrder(OrderVM orderVM)
         {
             await httpClient.PostAsync(
-                new Uri(baseAddress, "api/ApiHome/AddOrder"),
-                new StringContent(
-                    JsonSerializer.Serialize(orderVM), 
-                    Encoding.UTF8, 
-                    "application/json"));
+                new Uri(baseAddress, "api/ApiHome/AddOrder"), JsonContent.Create(orderVM));
+            MessageBox.Show("Заявка отправлена");
         }
 
         public async Task EditOrderControl(FieldValuesViewModel fieldValuesViewModel)
         {
             await httpClient.PutAsync(
                 new Uri(baseAddress, "api/ApiHome/Edit"),
-                new StringContent(
-                    JsonSerializer.Serialize(fieldValuesViewModel),
-                    Encoding.UTF8,
-                    "application/json"));
+                JsonContent.Create(fieldValuesViewModel));
         }
 
-        public async Task<List<Order>?> FilterOrdersByPeriod(string period)
+        public async Task<List<OrderVM>?> FilterOrdersByPeriod(string period)
         {
             var response = await httpClient.GetAsync(
                 new Uri(baseAddress, $"api/ApiHome/FilterByPeriod/{period}"));
-            var ordersList = await response.Content.ReadFromJsonAsync<List<Order>>();
+            var ordersList = await response.Content.ReadFromJsonAsync<List<OrderVM>>();
             return ordersList;
         }
 
         //рабочий стол
 
-        public async Task<List<Order>?> GetOrdersList()
+        public async Task<List<OrderVM>?> GetOrdersList()
         {
             var response = await httpClient.GetAsync(new Uri(baseAddress, "api/ApiHome/GetOrders"));
-            return await response.Content.ReadFromJsonAsync<List<Order>>();
+            return await response.Content.ReadFromJsonAsync<List<OrderVM>>();
         }
 
-        public async Task<int> GetTotalOrdersList()
+        public async Task<int> GetTotalOrdersListCount()
         {
             var ordersList = await GetOrdersList();
             return ordersList?.Count ?? 0;
         }
 
-        public async Task<List<Order>> FilterOrdersByDateRange(DateTime dateStart, DateTime dateEnd)
+        public async Task<List<OrderVM>> FilterOrdersByDateRange(DateTime dateStart, DateTime dateEnd)
         {
             var response = await httpClient.PostAsync(new Uri(baseAddress, "api/ApiHome/FilterByDateRange"), 
                 JsonContent.Create(new { DateStart = dateStart, DateEnd = dateEnd}));
-            var ordersList = await response.Content.ReadFromJsonAsync<List<Order>>();
+            var ordersList = await response.Content.ReadFromJsonAsync<List<OrderVM>>();
             return ordersList;
         }
 
-        //public record DateRangeFromRequest(DateTime DateStart, DateTime DateEnd);
+        public async Task ChangeStatus(OrderStatus status, Guid id)
+        {
+            var response = await httpClient.PostAsync(new Uri(baseAddress, $"api/ApiHome/ChangeStatus/{id}"),
+                JsonContent.Create(status));
+        }
 
         //проекты
 

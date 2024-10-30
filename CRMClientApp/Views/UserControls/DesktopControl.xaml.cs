@@ -3,7 +3,9 @@ using CRMClientApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -32,28 +34,36 @@ namespace CRMClientApp.Views.UserControls
         {
             var crmViewModel = (CRMViewModel)DataContext;
             var filteredOrdersList = await crmViewModel.CrmClient.FilterOrdersByPeriod("today");
-            crmViewModel.OrdersList = new ObservableCollection<Order>(filteredOrdersList);
+            crmViewModel.OrdersList.Clear();
+            foreach (var order in filteredOrdersList)
+                crmViewModel.OrdersList.Add(order);            
         }
 
         private async void YesterdayButton_Click(object sender, RoutedEventArgs e)
         {
             var crmViewModel = (CRMViewModel)DataContext;
             var filteredOrdersList = await crmViewModel.CrmClient.FilterOrdersByPeriod("yesterday");
-            crmViewModel.OrdersList = new ObservableCollection<Order>(filteredOrdersList);
+            crmViewModel.OrdersList.Clear();
+            foreach (var order in filteredOrdersList)
+                crmViewModel.OrdersList.Add(order);
         }
 
         private async void WeekButton_Click(object sender, RoutedEventArgs e)
         {
             var crmViewModel = (CRMViewModel)DataContext;
             var filteredOrdersList = await crmViewModel.CrmClient.FilterOrdersByPeriod("week");
-            crmViewModel.OrdersList = new ObservableCollection<Order>(filteredOrdersList);
+            crmViewModel.OrdersList.Clear();
+            foreach (var order in filteredOrdersList)
+                crmViewModel.OrdersList.Add(order);
         }
 
         private async void MonthButton_Click(object sender, RoutedEventArgs e)
         {
             var crmViewModel = (CRMViewModel)DataContext;
             var filteredOrdersList = await crmViewModel.CrmClient.FilterOrdersByPeriod("month");
-            crmViewModel.OrdersList = new ObservableCollection<Order>(filteredOrdersList);
+            crmViewModel.OrdersList.Clear();
+            foreach (var order in filteredOrdersList)
+                crmViewModel.OrdersList.Add(order);
         }
 
         private async void FilterButton_Click(object sender, RoutedEventArgs e)
@@ -62,7 +72,9 @@ namespace CRMClientApp.Views.UserControls
             var dateStart = (DateTime)crmViewModel.DateStart;
             var dateEnd = (DateTime)crmViewModel.DateEnd;
             var filteredOrdersList = await crmViewModel.CrmClient.FilterOrdersByDateRange(dateStart, dateEnd);
-            crmViewModel.OrdersList = new ObservableCollection<Order>(filteredOrdersList);
+            crmViewModel.OrdersList.Clear();
+            foreach (var order in filteredOrdersList)
+                crmViewModel.OrdersList.Add(order);
         }
     }
 }

@@ -7,6 +7,7 @@
         xmlns:usercontrols="clr-namespace:CRMClientApp.Views.UserControls"
         xmlns:viewmodels="clr-namespace:CRMClientApp.ViewModels" 
         d:DataContext="{d:DesignInstance Type=viewmodels:CRMViewModel}"
+        xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"  
         mc:Ignorable="d"
         Title="CRM-System"
         MinWidth="300" MinHeight="150"
@@ -50,7 +51,7 @@
                      DataContext="{Binding UpdateSourceTrigger=PropertyChanged}">
                 <usercontrols:ContactsControl/>
             </TabItem>
-            <TabItem Header="Рабочий стол" 
+            <TabItem Header="Рабочий стол" Width="Auto"
                      DataContext="{Binding UpdateSourceTrigger=PropertyChanged}"
                      Visibility="{Binding DataContext.CollapsedInitialVisibility, 
                         RelativeSource={RelativeSource AncestorType=Window}}">

@@ -29,7 +29,7 @@ namespace CRMSystem.Api         //https://localhost:<port>/swagger/index.html
         [HttpPost]
         public async Task<StatusCodeResult> AddOrder([FromBody] OrderDataFromRequest orderData)
         {
-            await Model.Add(orderData.Name, orderData.Email, orderData.Message);
+            await Model.Add(orderData.Name, orderData.Email, orderData.Text);
             return StatusCode(200);
         }
 
@@ -72,6 +72,6 @@ namespace CRMSystem.Api         //https://localhost:<port>/swagger/index.html
             });
         }
     }
-    public record OrderDataFromRequest(string Name, string Email, string Message);
+    public record OrderDataFromRequest(string Name, string Email, string Text);
     public record DateRangeFromRequest(DateTime DateStart, DateTime DateEnd);
 }

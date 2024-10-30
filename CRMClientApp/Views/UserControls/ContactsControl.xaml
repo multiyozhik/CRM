@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  
              mc:Ignorable="d" 
-             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"             
+             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"   
              xmlns:local="clr-namespace:CRMClientApp.ViewModels" 
              d:DataContext="{d:DesignInstance Type=local:CRMViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -23,13 +23,11 @@
             <TextBlock Text="{Binding ContactsValues.Fax, StringFormat=Факс: {0}}"/>
             <TextBlock Text="{Binding ContactsValues.Email, StringFormat=Email: {0}}"/>
             <TextBlock Text="{Binding ContactsValues.Director, StringFormat=ФИО: {0}}"/>
-            <ListView ItemsSource="{Binding SocialMediaLinksList, 
-                Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ListView ItemsSource="{Binding SocialMediaLinksList}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Button Click="Btn_Click" Style="{x:Null}" 
-                                Width="30" Height="30">
-                        <svgc:SvgViewbox Source="{Binding Path=Icon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Click="Btn_Click" Style="{x:Null}" >
+                            <svgc:SvgViewbox Source="{Binding Path=Icon}" Width="30" Height="30"/>
                         </Button>
                     </DataTemplate>
                 </ListView.ItemTemplate>

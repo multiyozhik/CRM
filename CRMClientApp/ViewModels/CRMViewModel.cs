@@ -7,8 +7,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
 
 namespace CRMClientApp.ViewModels
 {
@@ -20,6 +23,23 @@ namespace CRMClientApp.ViewModels
             CrmClient = crmClient;
             DateStart = DateTime.Now;   
             DateEnd = DateTime.Now;
+            OrdersList.CollectionChanged += OrdersList_CollectionChanged;
+        }
+
+        private void OrdersList_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems is null) return;
+            foreach (OrderVM order in e.NewItems)
+            {
+                order.PropertyChanged += Order_PropertyChanged;
+            }
+        }
+
+        private async void Order_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "Status") return;
+            var orderVM = (OrderVM)sender;            
+            await CrmClient.ChangeStatus(orderVM.Status, orderVM.Id);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -155,6 +175,10 @@ namespace CRMClientApp.ViewModels
         }
 
         //заявки
+
+        public List<string> OrderStatusList { get; } = new List<string>() {
+            "Получена", "В работе", "Выполнена", "Отклонена", "Отменена"};
+
         public OrderVM AddingOrder { get; } = new OrderVM();
 
         private AsyncRelayCommand? addOrderCommand; 
@@ -195,8 +219,8 @@ namespace CRMClientApp.ViewModels
 
         //рабочий стол
 
-        private Order? selectedOrder;
-        public Order? SelectedOrder
+        private OrderVM? selectedOrder;
+        public OrderVM? SelectedOrder
         {
             get => selectedOrder;
             set
@@ -205,17 +229,7 @@ namespace CRMClientApp.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedOrder)));
             }
         }
-
-        private ObservableCollection<Order>? ordersList;
-        public ObservableCollection<Order>? OrdersList
-        {
-            get => ordersList;
-            set
-            {
-                ordersList = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OrdersList)));
-            }
-        }
+        public ObservableCollection<OrderVM> OrdersList { get; } = new ObservableCollection<OrderVM>();
 
         private int totalOrdersCount;
         public int TotalOrdersCount
