@@ -14,10 +14,7 @@
         MaxWidth="1200" MaxHeight="800"        
         Width="800" Height="600">
     <DockPanel Background="Blue">
-        <Menu DockPanel.Dock="Top" HorizontalAlignment="Right">
-            <MenuItem Header="Список пользователей"
-                      Visibility="{Binding Path=CollapsedInitialVisibility, Mode=TwoWay, 
-                        UpdateSourceTrigger=PropertyChanged}"/>
+        <Menu DockPanel.Dock="Top" HorizontalAlignment="Right">            
             <MenuItem Header="Войти" 
                       Command="{Binding LoginCommand}"
                       Visibility="{Binding Path=VisibleInitialVisibility, Mode=TwoWay,
