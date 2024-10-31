@@ -1,6 +1,5 @@
 ﻿using CRMClientApp.ViewModels;
 using System.Diagnostics;
-using System.Threading.Channels;
 using System.Windows.Controls;
 
 namespace CRMClientApp.Views.UserControls

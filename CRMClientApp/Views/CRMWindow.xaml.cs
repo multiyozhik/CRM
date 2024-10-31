@@ -1,13 +1,10 @@
-﻿using CRMClientApp.Services;
-using CRMClientApp.Models;
+﻿using CRMClientApp.Models;
+using CRMClientApp.Services;
 using CRMClientApp.ViewModels;
 using System;
-using System.Windows;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Controls;
+using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace CRMClientApp.Views
 {

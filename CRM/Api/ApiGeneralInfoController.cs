@@ -1,11 +1,6 @@
 ﻿using CRMSystem.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Extensions;
-using System.IO;
-using System.IO.Pipes;
-using System.Net.Http;
 using System.Text.Json;
 
 namespace CRMSystem.Api
@@ -55,7 +50,7 @@ namespace CRMSystem.Api
         {            
             var directoryPath = $"{Directory.GetCurrentDirectory()}/wwwroot/img/";
             var filePath = Path.Combine(directoryPath, Path.GetFileName(fileName));
-            System.IO.File.Delete(filePath);                         //асинхронного Delete метода нет
+            System.IO.File.Delete(filePath);          
         }
     }
 }

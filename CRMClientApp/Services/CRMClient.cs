@@ -7,8 +7,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -47,12 +45,13 @@ namespace CRMClientApp.Services
             multipartFormContent.Add(fileStreamContent, "file", Path.GetFileName(filePath));
             var httpResponse = await httpClient
                 .PostAsync(new Uri(baseAddress, "api/ApiGeneralInfo/UploadFile"), multipartFormContent);
-            return await httpResponse.Content.ReadAsStringAsync();
+            var res = await httpResponse.Content.ReadAsStringAsync();
+            return res;
         }
 
         public async Task DeleteFile(string fileName)
         {
-            var response = await httpClient.DeleteAsync(
+            await httpClient.DeleteAsync(
                 new Uri(baseAddress, $"api/ApiGeneralInfo/DeleteFile/{fileName}"));
         }
 
@@ -73,7 +72,7 @@ namespace CRMClientApp.Services
             var linkList = linksDict.Select(link =>
                 new SocialMediaLinkVM()
                 {
-                    Icon = new Uri(baseAddress, link.Key.TrimStart('/')).ToString(),
+                    IconPath = new Uri(baseAddress, link.Key.TrimStart('/')).ToString(),
                     HyperlinkUri = link.Value
                 })
                 .ToList();
@@ -82,14 +81,14 @@ namespace CRMClientApp.Services
 
         public async Task AddLink(SocialMediaLinkVM newLink)
         {
-            var response = await httpClient.PostAsync(
+            await httpClient.PostAsync(
                 new Uri(baseAddress, "api/ApiContacts/SaveNewLink"), 
                 JsonContent.Create(newLink));
         }
 
         public async Task DeleteLink(string iconFileName)
         {
-            var response = await httpClient.DeleteAsync(
+            await httpClient.DeleteAsync(
                 new Uri(baseAddress, $"api/ApiContacts/Delete/{iconFileName}"));
         }
 
@@ -142,7 +141,7 @@ namespace CRMClientApp.Services
 
         public async Task ChangeStatus(OrderStatus status, Guid id)
         {
-            var response = await httpClient.PostAsync(new Uri(baseAddress, $"api/ApiHome/ChangeStatus/{id}"),
+            await httpClient.PostAsync(new Uri(baseAddress, $"api/ApiHome/ChangeStatus/{id}"),
                 JsonContent.Create(status));
         }
 

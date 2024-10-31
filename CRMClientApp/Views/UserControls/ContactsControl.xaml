@@ -27,7 +27,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Button Click="Btn_Click" Style="{x:Null}" >
-                            <svgc:SvgViewbox Source="{Binding Path=Icon}" Width="30" Height="30"/>
+                            <svgc:SvgViewbox Source="{Binding Path=IconPath}" Width="30" Height="30"/>
                         </Button>
                     </DataTemplate>
                 </ListView.ItemTemplate>

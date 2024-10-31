@@ -1,6 +1,5 @@
 ﻿using CRMClientApp.Models;
 using CRMClientApp.ViewModels;
-using System;
 using System.Windows;
 using System.Windows.Controls;
 

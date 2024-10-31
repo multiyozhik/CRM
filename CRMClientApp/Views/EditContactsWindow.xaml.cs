@@ -1,18 +1,6 @@
 ﻿using CRMClientApp.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace CRMClientApp.Views
 {
@@ -32,10 +20,10 @@ namespace CRMClientApp.Views
             {
                 newLink = (SocialMediaLinkVM)linkFormWindow.DataContext;
                 var crmViewModel = (CRMViewModel)DataContext;
-                var serverIconPath = await crmViewModel.CrmClient.UploadFile(newLink.Icon, "image/svg+xml");
-                newLink.Icon = System.IO.Path.GetFileName(serverIconPath);
+                var serverIconPath = await crmViewModel.CrmClient.UploadFile(newLink.IconPath, "image/svg+xml");
+                newLink.IconPath = System.IO.Path.GetFileName(serverIconPath);
                 await crmViewModel.CrmClient.AddLink(newLink);
-                newLink.Icon = crmViewModel.CrmClient.GetUrlFileName(newLink.Icon);
+                newLink.IconPath = crmViewModel.CrmClient.GetUrlFileName(newLink.IconPath);
                 crmViewModel.SocialMediaLinksList.Add(newLink);
 
                 //т.е. из datacontext получаем путь к файлу иконки в клиенте, 
@@ -48,10 +36,10 @@ namespace CRMClientApp.Views
         {
             var button = (Button)sender;
             var link = (SocialMediaLinkVM)button.DataContext;
-            link.Icon = System.IO.Path.GetFileName(link.Icon);
+            link.IconPath = System.IO.Path.GetFileName(link.IconPath);
             var crmViewModel = (CRMViewModel)DataContext;
-            await crmViewModel.CrmClient.DeleteLink(link.Icon);
-            await crmViewModel.CrmClient.DeleteFile(link.Icon);
+            await crmViewModel.CrmClient.DeleteLink(link.IconPath);
+            await crmViewModel.CrmClient.DeleteFile(link.IconPath);
             crmViewModel.SocialMediaLinksList.Remove(link); 
         }
     }

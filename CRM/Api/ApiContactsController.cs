@@ -1,5 +1,4 @@
-﻿using CRMSystem.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -17,16 +16,17 @@ namespace CRMSystem.Api
         {
             var directory = $"{Directory.GetCurrentDirectory()}/wwwroot/files/";
             var linksDict = await Deserialize($"{directory}/social-media-links.json");
-            var b = linksDict?.Remove($"/img/{iconFileName}");
+            linksDict?.Remove($"/img/{iconFileName}");
             await Serialize($"{directory}/social-media-links.json", linksDict);
         }
 
         [HttpPost]
         public async Task SaveNewLink([FromBody] SocialMediaLinkVM link)
         {
-            var linksDict = await Deserialize("/files/social-media-links.json");
+            var directory = Directory.GetCurrentDirectory();
+            var linksDict = await Deserialize($"{directory}/wwwroot/files/social-media-links.json");
             linksDict?.Add($"/img/{link.IconPath}", link.HyperlinkUri);
-            await Serialize("/files/social-media-links.json", linksDict);
+            await Serialize($"{directory}/wwwroot/files/social-media-links.json", linksDict);
         }
 
         [NonAction]
